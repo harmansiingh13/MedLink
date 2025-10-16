@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+@import 'tailwindcss';
+
+* {
+  font-family: Outfit;
+}
+
+/* Smooth Scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Navbar Underline */
+.active hr {
+  @apply block;
+}
+
+
+@media (max-width:740px){
+  .active p{
+    @apply text-white bg-primary
+  }
+}
+
+/* Global Themes */
+@theme {
+  --color-primary: #5f6fff;
+  --gridTemplateColumns-auto: repeat(auto-fill, minmax(200px, 1fr));
+}
+@layer utilities {
+  .grid-cols-auto {
+    grid-template-columns: var(--gridTemplateColumns-auto);
+  }
+}
+
+/* Scroll Hidden */
+::-webkit-scrollbar {
+  @apply hidden;
+}
+
+/* toaster */
+@keyframes fade-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-down {
+  animation: fade-in-down 0.3s ease forwards;
+}
