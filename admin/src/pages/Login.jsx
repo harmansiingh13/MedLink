@@ -1,10 +1,39 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useState } from 'react';
+import { AdminContext } from '../context/AdminContext';
+import axios from 'axios';
+import { useToast } from '../context/ToastContext';
 
 const Login = () => {
   const [state, setState] = useState('Admin');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const { showToast } = useToast();
+
+  const { setAToken, backendUrl } = useContext(AdminContext);
+
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+    console.log('clicked!');
+    try {
+      if (state === 'Admin') {
+        const { data } = await axios.post(backendUrl + '/api/admin/login', { email, password });
+        if (data.success) {
+          localStorage.setItem('aToken', data.token);
+          setAToken(data.token);
+          showToast('Successfully login', 'success');
+          console.log(data.token);
+        } else {
+          showToast(data.message, 'error');
+        }
+      } else {
+      }
+    } catch (error) {}
+  };
+
   return (
-    <form className="min-h-[80vh] flex items-center">
+    <form onSubmit={onSubmitHandler} className="min-h-[80vh] flex items-center">
       <div className="flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border border-zinc-100 rounded-xl text-[#5E5E5E] text-sm shadow-lg">
         <p className="text-2xl font-semibold m-auto">
           <span className="text-primary">{state}</span> Login
@@ -14,6 +43,8 @@ const Login = () => {
           <input
             type="email"
             required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="border border-[#DADADA] rounded w-full p-2 mt-1"
           />
         </div>
@@ -22,6 +53,8 @@ const Login = () => {
           <input
             type="password"
             required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             className="border border-[#DADADA] rounded w-full p-2 mt-1"
           />
         </div>

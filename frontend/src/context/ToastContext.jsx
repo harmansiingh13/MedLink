@@ -7,7 +7,6 @@ export const ToastContextProvider = ({ children }) => {
 
   const showToast = useCallback((message, type = 'info') => {
     const id = Date.now();
-
     setToast({ id, message, type });
 
     setTimeout(() => {
@@ -19,17 +18,16 @@ export const ToastContextProvider = ({ children }) => {
     <ToastContext.Provider value={{ showToast }}>
       {children}
 
-      {/* Top-center single toast */}
       {toast && (
-        <div className="fixed top-5 left-1/2 z-[9999] -translate-x-1/2">
+        <div className="fixed top-5 right-5 z-[9999] animate-fade-in-right">
           <div
-            className={`p-3 rounded-lg shadow-md animate-fade-in-down text-sm font-medium transition-all
+            className={`p-3 rounded-lg shadow-lg text-sm font-medium transition-all
               ${
                 toast.type === 'success'
                   ? 'bg-green-600 text-white'
                   : toast.type === 'error'
-                  ? 'bg-red-700 text-white'
-                  : 'bg-gray-100 border border-gray-300 text-gray-800'
+                  ? 'bg-red-600 text-white'
+                  : 'bg-gray-800 text-white'
               }
             `}
           >
@@ -44,7 +42,7 @@ export const ToastContextProvider = ({ children }) => {
 export const useToast = () => {
   const context = useContext(ToastContext);
   if (!context) {
-    throw new Error('useToast must be used within a ToastProvider');
+    throw new Error('useToast must be used within a ToastContextProvider');
   }
   return context;
 };

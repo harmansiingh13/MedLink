@@ -1,5 +1,4 @@
-@import "tailwindcss";
-
+@import 'tailwindcss';
 
 /* Global Themes */
 @theme {
@@ -10,4 +9,20 @@
   .grid-cols-auto {
     grid-template-columns: var(--gridTemplateColumns-auto);
   }
+}
+
+/* toaster animation */
+@keyframes fade-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(50%) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) translateY(0);
+  }
+}
+
+.animate-fade-in-right {
+  animation: fade-in-right 0.4s ease forwards;
 }
