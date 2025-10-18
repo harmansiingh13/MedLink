@@ -8,14 +8,7 @@ const addDoctor = async (req, res) => {
   try {
     const { name, email, password, speciality, degree, experience, about, fees, address } =
       req.body;
-
-    let imageUrl;
-    if (req.file) {
-      const imageUpload = await cloudinary.uploader.upload(req.file.path, {
-        resource_type: 'image',
-      });
-      imageUrl = imageUpload.secure_url;
-    }
+    const imageFile = req.file;
 
     if (
       !name ||
@@ -42,10 +35,15 @@ const addDoctor = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
+    const imageUpload = await cloudinary.uploader.upload(imageFile.path, {
+      resource_type: 'image',
+    });
+    const imageUrl = imageUpload.secure_url;
+
     const doctorData = {
       name,
       email,
-      imageUrl,
+      image: imageUrl,
       password: hashedPassword,
       speciality,
       degree,

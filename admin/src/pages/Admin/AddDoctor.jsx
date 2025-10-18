@@ -50,10 +50,20 @@ const AddDoctor = () => {
 
       if (data.success) {
         showToast(data.message, 'success');
+        setDocImg(false);
+        setName('');
+        setPassword('');
+        setEmail('');
+        setAddress1('');
+        setAddress2('');
+        setDegree('');
+        setAbout('');
+        setFees('');
       } else {
         showToast(data.message, 'error');
       }
     } catch (error) {
+      showToast(error.message, 'error');
       console.error('Form submit error:', error);
     }
   };
