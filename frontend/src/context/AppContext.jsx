@@ -1,5 +1,4 @@
 import { createContext } from 'react';
-// import { doctors } from '../assets/assets';
 import axios from 'axios';
 import { useToast } from './ToastContext';
 import { useState } from 'react';
@@ -12,10 +11,10 @@ export const AppContextProvider = ({ children }) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const { showToast } = useToast();
   const [doctors, setDoctors] = useState([]);
-
   const [token, setToken] = useState(
     localStorage.getItem('token') ? localStorage.getItem('token') : false,
   );
+  const [userData, setUserData] = useState(false);
 
   const getDoctorsData = async () => {
     try {
@@ -31,12 +30,44 @@ export const AppContextProvider = ({ children }) => {
       showToast(error.message, 'error');
     }
   };
+  const loadUserProfileData = async () => {
+    try {
+      const { data } = await axios.get(backendUrl + '/api/user/get-profile', {
+        headers: { token },
+      });
+      if (data.success) {
+        setUserData(data.userData);
+      } else {
+        showToast('data.message', 'error');
+      }
+    } catch (error) {
+      console.log(error.message);
+      showToast(error.message, 'error');
+    }
+  };
 
-  const value = { doctors, currencySymbol, token, setToken, backendUrl };
+  const value = {
+    doctors,
+    currencySymbol,
+    token,
+    setToken,
+    backendUrl,
+    userData,
+    setUserData,
+    loadUserProfileData,
+  };
 
   useEffect(() => {
     getDoctorsData();
   }, []);
+
+  useEffect(() => {
+    if (token) {
+      loadUserProfileData();
+    } else {
+      setUserData(false);
+    }
+  }, [token]);
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
