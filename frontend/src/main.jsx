@@ -7,10 +7,10 @@ import { ToastContextProvider } from './context/ToastContext.jsx';
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
-    <AppContextProvider>
-      <ToastContextProvider>
+    <ToastContextProvider>
+      <AppContextProvider>
         <App />
-      </ToastContextProvider>
-    </AppContextProvider>
+      </AppContextProvider>
+    </ToastContextProvider>
   </BrowserRouter>,
 );

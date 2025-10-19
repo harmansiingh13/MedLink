@@ -9,14 +9,14 @@ import { ToastContextProvider } from './context/ToastContext.jsx';
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
-    <AdminContextProvider>
-      <DoctorContextProvider>
-        <AppContextProvider>
-          <ToastContextProvider>
+    <ToastContextProvider>
+      <AdminContextProvider>
+        <DoctorContextProvider>
+          <AppContextProvider>
             <App />
-          </ToastContextProvider>
-        </AppContextProvider>
-      </DoctorContextProvider>
-    </AdminContextProvider>
+          </AppContextProvider>
+        </DoctorContextProvider>
+      </AdminContextProvider>
+    </ToastContextProvider>
   </BrowserRouter>,
 );

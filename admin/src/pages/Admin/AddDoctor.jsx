@@ -127,8 +127,8 @@ const AddDoctor = () => {
               <select
                 value={experience}
                 onChange={(e) => setExperience(e.target.value)}
-                name=""
-                id=""
+                name="experience"
+                id="experience-select"
                 className="border border-zinc-200 rounded px-3 py-2"
               >
                 <option value="1 Year">1 Year</option>
@@ -162,8 +162,8 @@ const AddDoctor = () => {
               <select
                 value={speciality}
                 onChange={(e) => setSpeciality(e.target.value)}
-                name=""
-                id=""
+                name="speciality"
+                id="speciality-select"
                 className="border border-zinc-200 rounded px-3 py-2"
               >
                 <option value="General physician">General physician</option>
