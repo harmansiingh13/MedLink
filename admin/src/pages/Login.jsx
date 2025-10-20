@@ -3,8 +3,10 @@ import { useState } from 'react';
 import { AdminContext } from '../context/AdminContext';
 import axios from 'axios';
 import { useToast } from '../context/ToastContext';
+import { useLoader } from '../context/LoaderContext';
 
 const Login = () => {
+  const { showLoader, hideLoader } = useLoader();
   const [state, setState] = useState('Admin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,6 +19,7 @@ const Login = () => {
     e.preventDefault();
     console.log('clicked!');
     try {
+      showLoader();
       if (state === 'Admin') {
         const { data } = await axios.post(backendUrl + '/api/admin/login', { email, password });
         if (data.success) {
@@ -27,9 +30,13 @@ const Login = () => {
         } else {
           showToast(data.message, 'error');
         }
-      } else {
       }
-    } catch (error) {}
+    } catch (error) {
+      showToast(error.message, 'error');
+      console.error('Form submit error:', error);
+    } finally {
+      hideLoader();
+    }
   };
 
   return (

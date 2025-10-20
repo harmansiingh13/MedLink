@@ -1,17 +1,22 @@
-import { use, useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
 import { assets } from '../assets/assets';
 import RelatedDoctors from '../components/RelatedDoctors';
+import { useToast } from '../context/ToastContext';
+import axios from 'axios';
 
 const Appointment = () => {
   const { docId } = useParams();
-  const { doctors, currencySymbol } = useContext(AppContext);
+  const { doctors, currencySymbol, backendUrl, token, getDoctorsData } = useContext(AppContext);
   const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
   const [docInfo, setDocInfo] = useState(null);
   const [docSlots, setDocSlots] = useState([]);
   const [slotIndex, setSlotIndex] = useState(0);
   const [slotTime, setSlotTime] = useState('');
+  const { showToast } = useToast();
+  const navigate = useNavigate();
+  const { showLoader, hideLoader } = useLoader();
 
   const fetchDocInfo = async () => {
     const docInfo = doctors.find((doc) => doc._id === docId);
@@ -55,6 +60,43 @@ const Appointment = () => {
       }
 
       setDocSlots((prev) => [...prev, timeslots]);
+    }
+  };
+
+  const bookAppointment = async () => {
+    if (!token) {
+      showToast('Login to book appointment', 'error');
+      return navigate('/login');
+    }
+
+    try {
+      showLoader();
+      const date = docSlots[slotIndex][0].datetime;
+      let day = date.getDate();
+      let month = date.getMonth() + 1;
+      let year = date.getFullYear();
+
+      const slotDate = day + '_' + month + '_' + year;
+
+      const { data } = await axios.post(
+        backendUrl + '/api/user/book-appointment',
+        { docId, slotDate, slotTime },
+        { headers: { token } },
+      );
+
+      if (data.success) {
+        showToast(data.message, 'success');
+        getDoctorsData();
+        navigate('/my-appointments');
+      } else {
+        console.log(data.message);
+        showToast(data.message, 'error');
+      }
+    } catch (error) {
+      console.log(error);
+      showToast(error.message, 'error');
+    } finally {
+      hideLoader();
     }
   };
 
@@ -142,7 +184,10 @@ const Appointment = () => {
                 </p>
               ))}
           </div>
-          <button className="bg-primary text-white text-sm font-light px-14 py-3 rounded-full my-6 cursor-pointer">
+          <button
+            onClick={bookAppointment}
+            className="bg-primary text-white text-sm font-light px-14 py-3 rounded-full my-6 cursor-pointer"
+          >
             Book an appointment
           </button>
         </div>

@@ -13,8 +13,8 @@ const MyProfile = () => {
   const [image, setImage] = useState(false);
 
   const updateUserProfileData = async () => {
-    showLoader();
     try {
+    showLoader();
       const formData = new FormData();
       formData.append('name', userData.name);
       formData.append('phone', userData.phone);

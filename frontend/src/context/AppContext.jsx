@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useToast } from './ToastContext';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { useLoader } from './LoaderContext';
 
 export const AppContext = createContext();
 
@@ -14,10 +15,12 @@ export const AppContextProvider = ({ children }) => {
   const [token, setToken] = useState(
     localStorage.getItem('token') ? localStorage.getItem('token') : false,
   );
+  const { showLoader, hideLoader } = useLoader();
   const [userData, setUserData] = useState(false);
 
   const getDoctorsData = async () => {
     try {
+      showLoader();
       const { data } = await axios.get(backendUrl + '/api/doctor/list');
 
       if (data.success) {
@@ -28,10 +31,13 @@ export const AppContextProvider = ({ children }) => {
     } catch (error) {
       console.log(error.message);
       showToast(error.message, 'error');
+    } finally {
+      hideLoader();
     }
   };
   const loadUserProfileData = async () => {
     try {
+      showLoader();
       const { data } = await axios.get(backendUrl + '/api/user/get-profile', {
         headers: { token },
       });
@@ -43,11 +49,14 @@ export const AppContextProvider = ({ children }) => {
     } catch (error) {
       console.log(error.message);
       showToast(error.message, 'error');
+    } finally {
+      hideLoader();
     }
   };
 
   const value = {
     doctors,
+    getDoctorsData,
     currencySymbol,
     token,
     setToken,

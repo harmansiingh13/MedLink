@@ -24,8 +24,8 @@ const AddDoctor = () => {
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    showLoader();
     try {
+      showLoader();
       if (!docImg) {
         showToast('Image not selected', 'error');
         return;
