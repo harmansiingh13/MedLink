@@ -2,15 +2,18 @@ import React, { useContext } from 'react';
 import { assets } from '../assets/assets';
 import { AdminContext } from '../context/AdminContext';
 import { useNavigate } from 'react-router-dom';
+import { useToast } from '../context/ToastContext';
 
 const Navbar = () => {
   const { aToken, setAToken } = useContext(AdminContext);
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   const logout = () => {
     navigate('/');
     aToken && setAToken('');
     aToken && localStorage.removeItem('aToken');
+    showToast('Logout Successfully', 'success');
   };
   return (
     <div className="flex justify-between items-center px-4 sm:px-10 py-3 border-b border-y-zinc-100 bg-white">

@@ -6,6 +6,8 @@ import contact_image from './images/contact_image.png';
 import about_image from './images/about_image.png';
 import logo from './images/logo.svg';
 import dropdown_icon from './icons/dropdown_icon.svg';
+import check_icon from './icons/check_icon.svg';
+import x_icon from './icons/x_icon.svg';
 import menu_icon from './icons/menu_icon.svg';
 import cross_icon from './icons/cross_icon.png';
 import chats_icon from './icons/chats_icon.svg';
@@ -55,6 +57,8 @@ export const assets = {
   upload_icon,
   stripe_logo,
   razorpay_logo,
+  check_icon,
+  x_icon,
 };
 
 export const specialityData = [

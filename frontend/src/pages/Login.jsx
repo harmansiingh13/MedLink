@@ -18,7 +18,7 @@ const Login = () => {
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     try {
-    showLoader();
+      showLoader();
       if (state === 'Sign Up') {
         const { data } = await axios.post(backendUrl + '/api/user/register', {
           name,
@@ -29,6 +29,7 @@ const Login = () => {
         if (data.success) {
           localStorage.setItem('token', data.token);
           setToken(data.token);
+          showToast('Register Successfully', 'success');
         } else {
           showToast(data.message, 'error');
         }
@@ -38,6 +39,7 @@ const Login = () => {
         if (data.success) {
           localStorage.setItem('token', data.token);
           setToken(data.token);
+          showToast('Login Successfully', 'success');
         } else {
           showToast(data.message, 'error');
         }
