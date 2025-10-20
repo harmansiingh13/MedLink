@@ -5,6 +5,7 @@ import { assets } from '../assets/assets';
 import RelatedDoctors from '../components/RelatedDoctors';
 import { useToast } from '../context/ToastContext';
 import axios from 'axios';
+import { useLoader } from '../context/LoaderContext';
 
 const Appointment = () => {
   const { docId } = useParams();
@@ -36,6 +37,10 @@ const Appointment = () => {
       endTime.setDate(today.getDate() + i);
       endTime.setHours(21, 0, 0, 0);
 
+      if (i === 0 && today.getHours() >= 21) {
+        continue;
+      }
+
       if (today.getDate() === currentDate.getDate()) {
         currentDate.setHours(currentDate.getHours() > 10 ? currentDate.getHours() + 1 : 10);
         currentDate.setMinutes(currentDate.getMinutes() > 30 ? 30 : 0);
@@ -51,10 +56,24 @@ const Appointment = () => {
           minute: '2-digit',
         });
 
-        timeslots.push({
-          datetime: new Date(currentDate),
-          time: formattedTime,
-        });
+        let day = currentDate.getDate();
+        let month = currentDate.getMonth() + 1;
+        let year = currentDate.getFullYear();
+
+        const slotDate = day + '_' + month + '_' + year;
+        const slotTime = formattedTime;
+
+        const isSlotAvailable =
+          docInfo.slots_booked[slotDate] && docInfo.slots_booked[slotDate].includes(slotTime)
+            ? false
+            : true;
+
+        if (isSlotAvailable) {
+          timeslots.push({
+            datetime: new Date(currentDate),
+            time: formattedTime,
+          });
+        }
 
         currentDate.setMinutes(currentDate.getMinutes() + 30);
       }
@@ -71,6 +90,21 @@ const Appointment = () => {
 
     try {
       showLoader();
+      if (
+        !docSlots ||
+        slotIndex === null ||
+        !docSlots[slotIndex] ||
+        !docSlots[slotIndex][0]?.datetime
+      ) {
+        showToast('Please select a date.', 'error');
+        return;
+      }
+
+      if (!slotTime) {
+        showToast('Please select a time slot.', 'error');
+        return;
+      }
+
       const date = docSlots[slotIndex][0].datetime;
       let day = date.getDate();
       let month = date.getMonth() + 1;
