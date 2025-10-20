@@ -25,6 +25,7 @@ const Appointment = () => {
   };
 
   const getAvailableSlot = async () => {
+    if (!docInfo) return;
     setDocSlots([]);
 
     let today = new Date();
@@ -54,6 +55,7 @@ const Appointment = () => {
         let formattedTime = currentDate.toLocaleTimeString([], {
           hour: '2-digit',
           minute: '2-digit',
+          hour12: true,
         });
 
         let day = currentDate.getDate();
