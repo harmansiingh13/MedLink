@@ -3,14 +3,17 @@ import { assets } from '../assets/assets';
 import { AppContext } from '../context/AppContext';
 import axios from 'axios';
 import { useToast } from '../context/ToastContext';
+import { useLoader } from '../context/LoaderContext';
 
 const MyProfile = () => {
   const { userData, setUserData, token, backendUrl, loadUserProfileData } = useContext(AppContext);
+  const { showLoader, hideLoader } = useLoader();
   const { showToast } = useToast();
   const [isEdit, setIsEdit] = useState(false);
   const [image, setImage] = useState(false);
 
   const updateUserProfileData = async () => {
+    showLoader();
     try {
       const formData = new FormData();
       formData.append('name', userData.name);
@@ -35,6 +38,8 @@ const MyProfile = () => {
     } catch (error) {
       console.log(error);
       showToast(error.message, 'error');
+    } finally {
+      hideLoader();
     }
   };
 

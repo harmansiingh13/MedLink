@@ -3,8 +3,10 @@ import { assets } from '../../assets/assets';
 import { AdminContext } from '../../context/AdminContext';
 import { useToast } from '../../context/ToastContext';
 import axios from 'axios';
+import { useLoader } from '../../context/LoaderContext';
 
 const AddDoctor = () => {
+  const { showLoader, hideLoader } = useLoader();
   const [docImg, setDocImg] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -22,7 +24,7 @@ const AddDoctor = () => {
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-
+    showLoader();
     try {
       if (!docImg) {
         showToast('Image not selected', 'error');
@@ -58,6 +60,8 @@ const AddDoctor = () => {
         setAddress2('');
         setDegree('');
         setAbout('');
+        setExperience(1);
+        setSpeciality('General physician');
         setFees('');
       } else {
         showToast(data.message, 'error');
@@ -65,6 +69,8 @@ const AddDoctor = () => {
     } catch (error) {
       showToast(error.message, 'error');
       console.error('Form submit error:', error);
+    } finally {
+      hideLoader();
     }
   };
 

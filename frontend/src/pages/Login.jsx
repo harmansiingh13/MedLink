@@ -3,10 +3,12 @@ import { AppContext } from '../context/AppContext';
 import axios from 'axios';
 import { useToast } from '../context/ToastContext';
 import { useNavigate } from 'react-router-dom';
+import { useLoader } from '../context/LoaderContext';
 
 const Login = () => {
   const { backendUrl, token, setToken } = useContext(AppContext);
   const { showToast } = useToast();
+  const { showLoader, hideLoader } = useLoader();
   const navigate = useNavigate();
   const [state, setState] = useState('Sign Up');
   const [email, setEmail] = useState('');
@@ -15,7 +17,7 @@ const Login = () => {
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-
+    showLoader();
     try {
       if (state === 'Sign Up') {
         const { data } = await axios.post(backendUrl + '/api/user/register', {
@@ -42,6 +44,8 @@ const Login = () => {
       }
     } catch (error) {
       showToast(error.message, 'error');
+    } finally {
+      hideLoader();
     }
   };
 
@@ -91,6 +95,7 @@ const Login = () => {
             className="border border-zinc-300 rounded w-full p-2 mt-1"
           />
         </div>
+
         <button type="submit" className="bg-primary text-white w-full py-2 rounded-md text-base">
           {state === 'Sign Up' ? 'Create Account' : 'Log in '}
         </button>

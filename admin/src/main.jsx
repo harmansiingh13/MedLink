@@ -6,17 +6,20 @@ import AdminContextProvider from './context/AdminContext.jsx';
 import DoctorContextProvider from './context/DoctorContext.jsx';
 import AppContextProvider from './context/AppContext.jsx';
 import { ToastContextProvider } from './context/ToastContext.jsx';
+import { LoaderContextProvider } from './context/LoaderContext.jsx';
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
-    <ToastContextProvider>
-      <AdminContextProvider>
-        <DoctorContextProvider>
-          <AppContextProvider>
-            <App />
-          </AppContextProvider>
-        </DoctorContextProvider>
-      </AdminContextProvider>
-    </ToastContextProvider>
+    <LoaderContextProvider>
+      <ToastContextProvider>
+        <AdminContextProvider>
+          <DoctorContextProvider>
+            <AppContextProvider>
+              <App />
+            </AppContextProvider>
+          </DoctorContextProvider>
+        </AdminContextProvider>
+      </ToastContextProvider>
+    </LoaderContextProvider>
   </BrowserRouter>,
 );
