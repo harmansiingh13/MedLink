@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const UserDropdown = ({ options, avatarSrc, userName, className = '' }) => {
+const UserDropdown = ({ options, avatarSrc }) => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
@@ -26,34 +26,23 @@ const UserDropdown = ({ options, avatarSrc, userName, className = '' }) => {
   }, []);
 
   return (
-    <div className={`relative inline-block text-left ${className}`} ref={dropdownRef}>
+    <div className={`relative inline-block text-left`} ref={dropdownRef}>
+      {/* Avatar button without borders */}
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
-        className="flex items-center gap-2 px-3 py-2 border border-gray-300 rounded-full shadow-sm hover:bg-gray-50 focus:outline-none"
+        className="flex items-center p-0 rounded-full focus:outline-none cursor-pointer"
       >
-        <img src={avatarSrc} alt="User Avatar" className="w-8 h-8 rounded-full object-cover" />
-        <span className="font-medium">{userName}</span>
-        <svg
-          className={`w-4 h-4 ml-2 transform transition-transform ${
-            open ? 'rotate-180' : 'rotate-0'
-          }`}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={2}
-          viewBox="0 0 24 24"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-        </svg>
+        <img src={avatarSrc} alt="User Avatar" className="w-10 h-10 rounded-full object-cover" />
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-10">
+        <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
           {options.map((option, index) => (
             <div
               key={index}
               onClick={() => handleOptionClick(option)}
-              className="px-4 py-2 cursor-pointer hover:bg-indigo-50 border-b border-zinc-100 last:border-0"
+              className="px-4 py-2 cursor-pointer hover:bg-indigo-50"
             >
               {option.label}
             </div>
