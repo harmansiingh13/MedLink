@@ -4,6 +4,7 @@ import { AdminContext } from '../../context/AdminContext';
 import { useToast } from '../../context/ToastContext';
 import axios from 'axios';
 import { useLoader } from '../../context/LoaderContext';
+import Dropdown from '../../components/Dropdown';
 
 const AddDoctor = () => {
   const { showLoader, hideLoader } = useLoader();
@@ -21,6 +22,27 @@ const AddDoctor = () => {
 
   const { backendUrl, aToken } = useContext(AdminContext);
   const { showToast } = useToast();
+  const experienceOptions = [
+    '1 Year',
+    '2 Year',
+    '3 Year',
+    '4 Year',
+    '5 Year',
+    '6 Year',
+    '7 Year',
+    '8 Year',
+    '9 Year',
+    '10 Year',
+  ];
+
+  const specialityOptions = [
+    'General physician',
+    'Gynecologist',
+    'Dermatologist',
+    'Pediatricians',
+    'Neurologist',
+    'Gastroenterologist',
+  ];
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
@@ -130,7 +152,7 @@ const AddDoctor = () => {
 
             <div className="flex-1 flex flex-col gap-1">
               <p>Experience</p>
-              <select
+              {/* <select
                 value={experience}
                 onChange={(e) => setExperience(e.target.value)}
                 name="experience"
@@ -147,7 +169,13 @@ const AddDoctor = () => {
                 <option value="8 Year">8 Year</option>
                 <option value="9 Year">9 Year</option>
                 <option value="10 Year">10 Year</option>
-              </select>
+              </select> */}
+              <Dropdown
+                options={experienceOptions}
+                placeholder="Select Experience"
+                className="border border-zinc-200 rounded px-3 py-2 w-40"
+                onSelect={(value) => setExperience(value)}
+              />
             </div>
             <div className="flex-1 flex flex-col gap-1">
               <p>Fees</p>
@@ -165,7 +193,7 @@ const AddDoctor = () => {
           <div className="w-full lg:flex-1 flex flex-col gap-4">
             <div className="flex-1 flex flex-col gap-1">
               <p>Speciality</p>
-              <select
+              {/* <select
                 value={speciality}
                 onChange={(e) => setSpeciality(e.target.value)}
                 name="speciality"
@@ -178,7 +206,14 @@ const AddDoctor = () => {
                 <option value="Pediatricians">Pediatricians</option>
                 <option value="Neurologist">Neurologist</option>
                 <option value="Gastroenterologist">Gastroenterologist</option>
-              </select>
+              </select> */}
+
+              <Dropdown
+                options={specialityOptions}
+                placeholder="Select Experience"
+                className="border border-zinc-200 rounded px-3 py-2 w-40"
+                onSelect={(value) => setSpeciality(value)}
+              />
             </div>
             <div className="flex-1 flex flex-col gap-1">
               <p>Eduction</p>

@@ -4,6 +4,7 @@ import { AppContext } from '../context/AppContext';
 import axios from 'axios';
 import { useToast } from '../context/ToastContext';
 import { useLoader } from '../context/LoaderContext';
+import Dropdown from '../components/Dropdown';
 
 const MyProfile = () => {
   const { userData, setUserData, token, backendUrl, loadUserProfileData } = useContext(AppContext);
@@ -14,7 +15,7 @@ const MyProfile = () => {
 
   const updateUserProfileData = async () => {
     try {
-    showLoader();
+      showLoader();
       const formData = new FormData();
       formData.append('name', userData.name);
       formData.append('phone', userData.phone);
@@ -135,14 +136,23 @@ const MyProfile = () => {
           <div className="grid grid-cols-[1fr_3fr] gap-y-2.5 mt-3 text-neutral-700">
             <p className="font-medium">Gender:</p>
             {isEdit ? (
-              <select
+              // <select
+              //   value={userData.gender}
+              //   onChange={(e) => setUserData((prev) => ({ ...prev, gender: e.target.value }))}
+              //   className="max-w-20 bg-gray-100"
+              // >
+              //   <option value="Male">Male</option>
+              //   <option value="Female">Female</option>
+              // </select>
+
+              <Dropdown
+                options={['Male', 'Female']}
                 value={userData.gender}
-                onChange={(e) => setUserData((prev) => ({ ...prev, gender: e.target.value }))}
-                className="max-w-20 bg-gray-100"
-              >
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
+                onSelect={(val) => setUserData((p) => ({ ...p, gender: val }))}
+                placeholder="Select Gender"
+                className="w-[80px] bg-gray-50 border-gray-200"
+                menuExtra={6}
+              />
             ) : (
               <p className="text-gray-400">{userData.gender}</p>
             )}
