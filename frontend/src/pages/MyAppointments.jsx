@@ -152,7 +152,6 @@ const MyAppointments = () => {
             </p>
           </div>
         </div>
-        <div className="mt-4 border-b border-gray-200"></div>
       </div>
 
       {/* Appointments List */}
