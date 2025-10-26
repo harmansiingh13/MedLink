@@ -67,7 +67,7 @@ const MyProfile = () => {
                       <img
                         src={image ? URL.createObjectURL(image) : userData.image}
                         alt="Profile"
-                        className="w-24 h-24 sm:w-28 sm:h-28 object-cover rounded-2xl border-2 border-gray-200 transition-all shadow-sm"
+                        className="w-24 h-24 sm:w-28 sm:h-28 object-cover rounded-2xl border border-gray-300 transition-all shadow-sm"
                       />
                       <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-2xl opacity-0 group-hover:opacity-100 transition-all">
                         <div className="text-white text-center">
@@ -88,7 +88,7 @@ const MyProfile = () => {
                     <img
                       src={userData.image}
                       alt="Profile"
-                      className="w-24 h-24 sm:w-28 sm:h-28 object-cover rounded-2xl border-2 border-gray-200 shadow-sm"
+                      className="w-24 h-24 sm:w-28 sm:h-28 object-cover rounded-2xl border border-gray-300 shadow-sm"
                     />
                   </div>
                 )}
