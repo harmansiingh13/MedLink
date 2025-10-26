@@ -18,7 +18,7 @@ const DoctorsList = () => {
         {doctors.map((item, index) => (
           <div
             key={index}
-            className="border border-indigo-200 rounded-xl max-w-56 overflow-hidden cursor-pointer group"
+            className="border border-indigo-200 rounded-xl max-w-56 overflow-hidden cursor-pointer group shadow-lg"
           >
             <img
               src={item.image}

@@ -9,7 +9,7 @@ const About = () => {
         </p>
       </div>
       <div className="my-10 flex flex-col md:flex-row gap-12">
-        <img className="w-full md:max-w-[360px]" src={assets.about_image} alt="" />
+        <img className="w-full md:max-w-[360px] border border-zinc-300" src={assets.about_image} alt="" />
         <div className="flex flex-col justify-center gap-6 md:w-2/4 text-sm text-gray-600">
           <p>
             Welcome to Prescripto, your trusted partner in managing your healthcare needs

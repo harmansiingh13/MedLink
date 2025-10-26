@@ -30,7 +30,7 @@ const RelatedDoctors = ({ docId, speciality }) => {
               scrollTo(0, 0);
             }}
             key={index}
-            className="border border-blue-200 rounded-xl overflow-hidden cursor-pointer hover:translate-y-[-10px] transition-all duration-500"
+            className="border border-blue-200 rounded-xl overflow-hidden shadow-lg cursor-pointer hover:translate-y-[-10px] transition-all duration-500"
           >
             <img className="bg-blue-50" src={item.image} alt="" />
             <div className="p-4">
