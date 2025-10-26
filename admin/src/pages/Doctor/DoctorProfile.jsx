@@ -107,7 +107,7 @@ const DoctorProfile = () => {
                               setProfileData((prev) => ({ ...prev, fees: e.target.value }))
                             }
                             type="number"
-                            className="pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full"
+                            className="pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-0 w-full"
                             placeholder="Enter fee amount"
                           />
                         </div>
@@ -128,8 +128,8 @@ const DoctorProfile = () => {
                             isEdit &&
                             setProfileData((prev) => ({ ...prev, available: !prev.available }))
                           }
-                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
-                            profileData.available ? 'bg-blue-600' : 'bg-gray-300'
+                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-0 ${
+                            profileData.available ? 'bg-primary' : 'bg-gray-300'
                           } ${isEdit ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'}`}
                           disabled={!isEdit}
                         >
@@ -166,7 +166,7 @@ const DoctorProfile = () => {
                             }))
                           }
                           type="text"
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-0"
                           placeholder="Address Line 1"
                         />
                         <input
@@ -178,7 +178,7 @@ const DoctorProfile = () => {
                             }))
                           }
                           type="text"
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-0"
                           placeholder="Address Line 2"
                         />
                       </div>
@@ -194,14 +194,14 @@ const DoctorProfile = () => {
                     {isEdit ? (
                       <button
                         onClick={updateProfile}
-                        className="inline-flex items-center px-6 py-2.5 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        className="inline-flex items-center px-6 py-2.5 border border-transparent text-sm font-medium rounded-lg text-white bg-primary cursor-pointer"
                       >
                         Save
                       </button>
                     ) : (
                       <button
                         onClick={() => setIsEdit(true)}
-                        className="inline-flex items-center px-6 py-2.5 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                        className="inline-flex items-center px-6 py-2.5 border border-transparent text-sm font-medium rounded-lg text-white bg-primary cursor-pointer"
                       >
                         Edit
                       </button>

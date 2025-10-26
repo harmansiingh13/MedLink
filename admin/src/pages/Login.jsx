@@ -1,10 +1,11 @@
-import { useContext } from 'react';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { AdminContext } from '../context/AdminContext';
 import axios from 'axios';
 import { useToast } from '../context/ToastContext';
 import { useLoader } from '../context/LoaderContext';
 import { DoctorContext } from '../context/DoctorContext';
+import { Briefcase, ShieldUser } from '../icons/Icons';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const { showLoader, hideLoader } = useLoader();
@@ -13,9 +14,10 @@ const Login = () => {
   const [password, setPassword] = useState('');
 
   const { showToast } = useToast();
-
   const { setAToken, backendUrl } = useContext(AdminContext);
   const { setDToken } = useContext(DoctorContext);
+
+  const navigate = useNavigate();
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
@@ -25,20 +27,20 @@ const Login = () => {
       if (state === 'Admin') {
         const { data } = await axios.post(backendUrl + '/api/admin/login', { email, password });
         if (data.success) {
+          navigate('/admin-dashboard');
           localStorage.setItem('aToken', data.token);
           setAToken(data.token);
-          showToast('Login Successfully', 'success');
-          console.log(data.token);
+          showToast('Admin login successful', 'success');
         } else {
           showToast(data.message, 'error');
         }
       } else {
         const { data } = await axios.post(backendUrl + '/api/doctor/login', { email, password });
         if (data.success) {
+          navigate('/doctor-dashboard');
           localStorage.setItem('dToken', data.token);
           setDToken(data.token);
-          showToast('Login Successfully', 'success');
-          console.log(data.token);
+          showToast('Doctor login successful', 'success');
         } else {
           showToast(data.message, 'error');
         }
@@ -51,58 +53,99 @@ const Login = () => {
     }
   };
 
+  const switchMode = (newMode) => {
+    setState(newMode);
+    setEmail('');
+    setPassword('');
+  };
+
   return (
-    <form onSubmit={onSubmitHandler} className="min-h-[80vh] flex items-center">
-      <div className="flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border border-zinc-100 rounded-xl text-[#5E5E5E] text-sm shadow-lg">
-        <p className="text-2xl font-semibold m-auto">
-          <span className="text-primary">{state}</span> Login
-        </p>
-        <div className="w-full">
-          <p>Email</p>
-          <input
-            type="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="border border-[#DADADA] rounded w-full p-2 mt-1"
-          />
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        <div className="text-center mb-8">
+          <div className="flex justify-center mb-4"></div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">{state} Portal</h1>
         </div>
-        <div className="w-full">
-          <p>Password</p>
-          <input
-            type="password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="border border-[#DADADA] rounded w-full p-2 mt-1"
-          />
+
+        {/* Login Card */}
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+          {/* Mode Toggle */}
+          <div className="flex border-b border-gray-200">
+            <button
+              onClick={() => switchMode('Admin')}
+              className={`flex-1 py-4 px-6 text-sm font-medium transition-all duration-200 cursor-pointer ${
+                state === 'Admin'
+                  ? 'bg-blue-50 text-primary border-b-2 border-primary'
+                  : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+              }`}
+            >
+              <div className="flex items-center justify-center gap-2">
+                <ShieldUser className="w-5 h-5" />
+                Admin Login
+              </div>
+            </button>
+            <button
+              onClick={() => switchMode('Doctor')}
+              className={`flex-1 py-4 px-6 text-sm font-medium transition-all duration-200 cursor-pointer ${
+                state === 'Doctor'
+                  ? 'bg-blue-50 text-primary border-b-2 border-primary'
+                  : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+              }`}
+            >
+              <div className="flex items-center justify-center gap-2">
+                <Briefcase className="w-5 h-5" />
+                Doctor Login
+              </div>
+            </button>
+          </div>
+
+          {/* Form */}
+          <form onSubmit={onSubmitHandler} className="p-8">
+            <div className="space-y-6">
+              {/* Email Field */}
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                  Email Address
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-0 focus:outline-none"
+                  placeholder={`Enter your ${state.toLowerCase()} email`}
+                />
+              </div>
+
+              {/* Password Field */}
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                  Password
+                </label>
+                <input
+                  id="password"
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-0 focus:outline-none"
+                  placeholder="Enter your password"
+                />
+              </div>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                className="w-full bg-primary text-white py-3 px-4 rounded-lg font-medium cursor-pointer "
+              >
+                {`Sign in as ${state}`}
+              </button>
+            </div>
+          </form>
         </div>
-        <button className="bg-primary text-white w-full py-2 rounded-md text-base cursor-pointer">
-          Login
-        </button>
-        {state === 'Admin' ? (
-          <p>
-            Doctor Login?{' '}
-            <span
-              onClick={() => setState('Doctor')}
-              className="text-primary underline cursor-pointer"
-            >
-              Click here
-            </span>
-          </p>
-        ) : (
-          <p>
-            Admin Login?{' '}
-            <span
-              onClick={() => setState('Admin')}
-              className="text-primary underline cursor-pointer"
-            >
-              Click here
-            </span>
-          </p>
-        )}
       </div>
-    </form>
+    </div>
   );
 };
 

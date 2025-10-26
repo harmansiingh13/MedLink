@@ -29,7 +29,7 @@ const Login = () => {
         if (data.success) {
           localStorage.setItem('token', data.token);
           setToken(data.token);
-          showToast('Register Successfully', 'success');
+          showToast('Account created successfully', 'success');
         } else {
           showToast(data.message, 'error');
         }
@@ -39,7 +39,7 @@ const Login = () => {
         if (data.success) {
           localStorage.setItem('token', data.token);
           setToken(data.token);
-          showToast('Login Successfully', 'success');
+          showToast('Login successful', 'success');
         } else {
           showToast(data.message, 'error');
         }
@@ -58,73 +58,123 @@ const Login = () => {
   }, [token]);
 
   return (
-    <form onSubmit={onSubmitHandler} className="min-h-[80vh] flex items-center">
-      <div className="flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border border-zinc-200 rounded-xl text-zinc-600 text-sm shadow-lg">
-        <p className="text-2xl font-semibold">{state === 'Sign Up' ? 'Create Account' : 'Login'}</p>
-        <p>Please {state === 'Sign Up' ? 'sign up' : 'log in'} to book appointment</p>
-
-        {state === 'Sign Up' && (
-          <div className="w-full">
-            <p>Full Name</p>
-            <input
-              type="text"
-              onChange={(e) => setName(e.target.value)}
-              value={name}
-              required
-              className="border border-zinc-300 rounded w-full p-2 mt-1"
-            />
-          </div>
-        )}
-
-        <div className="w-full">
-          <p>Email</p>
-          <input
-            type="email"
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-            required
-            className="border border-zinc-300 rounded w-full p-2 mt-1"
-          />
-        </div>
-
-        <div className="w-full">
-          <p>Password</p>
-          <input
-            type="password"
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-            required
-            className="border border-zinc-300 rounded w-full p-2 mt-1"
-          />
-        </div>
-
-        <button type="submit" className="bg-primary text-white w-full py-2 rounded-md text-base">
-          {state === 'Sign Up' ? 'Create Account' : 'Log in '}
-        </button>
-
-        {state === 'Sign Up' ? (
-          <p>
-            Already have an account?{' '}
-            <span
-              onClick={() => setState('Login')}
-              className="text-primary underline cursor-pointer"
-            >
-              Login here
-            </span>
+    <div className="py-10 flex flex-col justify-center">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="text-center">
+          <h2 className="text-3xl font-bold text-gray-900">
+            {state === 'Sign Up' ? 'Create your account' : 'Welcome back'}
+          </h2>
+          <p className="mt-2 text-sm text-gray-600">
+            {state === 'Sign Up'
+              ? 'Please fill in your details to create an account'
+              : 'Sign in to your account to continue'}
           </p>
-        ) : (
-          <p>
-            Create an new account?{' '}
-            <span
-              onClick={() => setState('Sign Up')}
-              className="text-primary underline cursor-pointer"
-            >
-              Click here
-            </span>
-          </p>
-        )}
+        </div>
       </div>
-    </form>
+
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="bg-white py-8 px-6 shadow-lg rounded-lg sm:px-10 border border-gray-100">
+          <form onSubmit={onSubmitHandler} className="space-y-6">
+            {state === 'Sign Up' && (
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                  Full Name
+                </label>
+                <div className="mt-1">
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    autoComplete="name"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="appearance-none block w-full px-3 py-2.5 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-0"
+                    placeholder="Enter your full name"
+                  />
+                </div>
+              </div>
+            )}
+
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                Email address
+              </label>
+              <div className="mt-1">
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="appearance-none block w-full px-3 py-2.5 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-0"
+                  placeholder="Enter your email address"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                Password
+              </label>
+              <div className="mt-1">
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete={state === 'Sign Up' ? 'new-password' : 'current-password'}
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="appearance-none block w-full px-3 py-2.5 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-0"
+                  placeholder="Enter your password"
+                />
+              </div>
+            </div>
+
+            <div>
+              <button
+                type="submit"
+                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary cursor-pointer"
+              >
+                {state === 'Sign Up' ? 'Create Account' : 'Sign In'}
+              </button>
+            </div>
+          </form>
+
+          <div className="mt-6">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white text-gray-500">Or</span>
+              </div>
+            </div>
+
+            <div className="mt-6 text-center">
+              <p className="text-sm text-gray-600">
+                {state === 'Sign Up' ? 'Already have an account?' : "Don't have an account?"}{' '}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setState(state === 'Sign Up' ? 'Login' : 'Sign Up');
+                    setName('');
+                    setEmail('');
+                    setPassword('');
+                  }}
+                  className="font-medium text-primary underline cursor-pointer"
+                >
+                  {state === 'Sign Up' ? 'Sign in' : 'Sign up'}
+                </button>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

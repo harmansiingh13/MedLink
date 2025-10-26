@@ -102,7 +102,7 @@ const MyProfile = () => {
                       type="text"
                       value={userData.name}
                       onChange={(e) => setUserData((prev) => ({ ...prev, name: e.target.value }))}
-                      className="text-2xl font-bold bg-gray-50 border border-gray-300 rounded-lg px-2 py-2 w-full max-w-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition duration-200"
+                      className="text-2xl font-bold bg-gray-50 border border-gray-300 rounded-lg px-2 py-2 w-full max-w-md focus:ring-0 focus:outline-none"
                       placeholder="Enter your name"
                     />
                   </div>
@@ -133,7 +133,7 @@ const MyProfile = () => {
                     type="tel"
                     value={userData.phone}
                     onChange={(e) => setUserData((prev) => ({ ...prev, phone: e.target.value }))}
-                    className="w-full bg-gray-50 border border-gray-300 rounded-lg px-2 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition duration-200"
+                    className="w-full bg-gray-50 border border-gray-300 rounded-lg px-2 py-2 focus:ring-0 focus:outline-none"
                     placeholder="Enter phone number"
                   />
                 ) : (
@@ -156,7 +156,7 @@ const MyProfile = () => {
                           address: { ...prev.address, line1: e.target.value },
                         }))
                       }
-                      className="w-full bg-gray-50 border border-gray-300 rounded-lg px-2 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition duration-200"
+                      className="w-full bg-gray-50 border border-gray-300 rounded-lg px-2 py-2 focus:ring-0 focus:outline-none"
                       placeholder="Address line 1"
                     />
                     <input
@@ -168,8 +168,8 @@ const MyProfile = () => {
                           address: { ...prev.address, line2: e.target.value },
                         }))
                       }
-                      className="w-full bg-gray-50 border border-gray-300 rounded-lg px-2 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition duration-200"
-                      placeholder="Address line 2 (optional)"
+                      className="w-full bg-gray-50 border border-gray-300 rounded-lg px-2 py-2 focus:ring-0 focus:outline-none"
+                      placeholder="Address line 2 "
                     />
                   </div>
                 ) : (
@@ -198,7 +198,7 @@ const MyProfile = () => {
                     value={userData.gender}
                     onSelect={(val) => setUserData((p) => ({ ...p, gender: val }))}
                     placeholder="Select Gender"
-                    className="w-full bg-gray-50 border border-gray-300 rounded-lg px-2 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition duration-200"
+                    className="w-full bg-gray-50 border border-gray-300 rounded-lg px-2 py-2 focus:ring-0 focus:outline-none"
                   />
                 ) : (
                   <p className="text-gray-900 font-medium py-3">
@@ -214,7 +214,7 @@ const MyProfile = () => {
                     type="date"
                     value={userData.dob}
                     onChange={(e) => setUserData((prev) => ({ ...prev, dob: e.target.value }))}
-                    className="w-full bg-gray-50 border border-gray-300 rounded-lg px-2 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition duration-200"
+                    className="w-full bg-gray-50 border border-gray-300 rounded-lg px-2 py-2 focus:ring-0 focus:outline-none"
                   />
                 ) : (
                   <p className="text-gray-900 font-medium py-3">

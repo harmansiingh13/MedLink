@@ -124,7 +124,7 @@ const AddDoctor = () => {
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="border border-zinc-200 rounded px-3 py-2"
+                className="border border-zinc-200 rounded px-3 py-2 focus:outline-none focus:ring-0"
               />
             </div>
             <div className="flex-1 flex flex-col gap-1">
@@ -135,7 +135,7 @@ const AddDoctor = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="border border-zinc-200 rounded px-3 py-2"
+                className="border border-zinc-200 rounded px-3 py-2 focus:outline-none focus:ring-0"
               />
             </div>
             <div className="flex-1 flex flex-col gap-1">
@@ -146,7 +146,7 @@ const AddDoctor = () => {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="border border-zinc-200 rounded px-3 py-2"
+                className="border border-zinc-200 rounded px-3 py-2 focus:outline-none focus:ring-0"
               />
             </div>
 
@@ -155,7 +155,7 @@ const AddDoctor = () => {
               <Dropdown
                 options={experienceOptions}
                 placeholder="Select Experience"
-                className="border border-zinc-200 rounded px-3 py-2 w-40"
+                className="border border-zinc-200 rounded px-3 py-2 w-40 focus:outline-none focus:ring-0"
                 onSelect={(value) => setExperience(value)}
               />
             </div>
@@ -167,7 +167,7 @@ const AddDoctor = () => {
                 required
                 value={fees}
                 onChange={(e) => setFees(e.target.value)}
-                className="border border-zinc-200 rounded px-3 py-2"
+                className="border border-zinc-200 rounded px-3 py-2 focus:outline-none focus:ring-0"
               />
             </div>
           </div>
@@ -179,7 +179,7 @@ const AddDoctor = () => {
               <Dropdown
                 options={specialityOptions}
                 placeholder="Select Experience"
-                className="border border-zinc-200 rounded px-3 py-2 w-40"
+                className="border border-zinc-200 rounded px-3 py-2 w-40 focus:outline-none focus:ring-0"
                 onSelect={(value) => setSpeciality(value)}
               />
             </div>
@@ -191,7 +191,7 @@ const AddDoctor = () => {
                 required
                 value={degree}
                 onChange={(e) => setDegree(e.target.value)}
-                className="border border-zinc-200 rounded px-3 py-2"
+                className="border border-zinc-200 rounded px-3 py-2 focus:outline-none focus:ring-0"
               />
             </div>
 
@@ -203,7 +203,7 @@ const AddDoctor = () => {
                 required
                 value={address1}
                 onChange={(e) => setAddress1(e.target.value)}
-                className="border border-zinc-200 rounded px-3 py-2"
+                className="border border-zinc-200 rounded px-3 py-2 focus:outline-none focus:ring-0"
               />
               <input
                 type="text"
@@ -211,7 +211,7 @@ const AddDoctor = () => {
                 required
                 value={address2}
                 onChange={(e) => setAddress2(e.target.value)}
-                className="border border-zinc-200 rounded px-3 py-2"
+                className="border border-zinc-200 rounded px-3 py-2 focus:outline-none focus:ring-0"
               />
             </div>
           </div>
@@ -225,7 +225,7 @@ const AddDoctor = () => {
             required
             value={about}
             onChange={(e) => setAbout(e.target.value)}
-            className="w-full px-4 pt-2 border border-zinc-200 rounded"
+            className="w-full px-4 pt-2 border border-zinc-200 rounded focus:outline-none focus:ring-0"
           />
         </div>
         <button

@@ -60,7 +60,11 @@ const DoctorDashboard = () => {
                 key={index}
                 className="flex items-center px-6 py-4 gap-3 hover:bg-gray-100 transition-colors"
               >
-                <img src={item.userData.image} alt="" className="rounded-full w-10" />
+                <img
+                  src={item.userData.image}
+                  alt=""
+                  className="w-9 h-9 object-cover rounded-full"
+                />
                 <div className="flex-1 text-sm">
                   <p className="text-gray-800 font-medium">{item.userData.name}</p>
                   <p className="text-gray-600">{slotDateFormat(item.slotDate)}</p>
