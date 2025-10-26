@@ -1,9 +1,7 @@
-import React from 'react';
 import { useContext } from 'react';
 import { DoctorContext } from '../../context/DoctorContext';
 import { useEffect } from 'react';
 import { AppContext } from '../../context/AppContext';
-import { assets } from '../../assets/assets';
 import { Check, X } from '../../icons/Icons';
 
 const DoctorAppointments = () => {

@@ -2,8 +2,6 @@ import { assets } from '../assets/assets';
 import { useToast } from '../context/ToastContext';
 
 const Contact = () => {
-  const { showToast, hideToast } = useToast();
-
   return (
     <div>
       <div className="text-center text-2xl pt-10 text-gray-500">

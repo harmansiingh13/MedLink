@@ -44,7 +44,6 @@ export const Calendar = (props) => (
   </IconWrapper>
 );
 
-
 export const Dashboard = (props) => (
   <IconWrapper {...props}>
     <rect width="7" height="9" x="3" y="3" rx="1" />
@@ -53,7 +52,6 @@ export const Dashboard = (props) => (
     <rect width="7" height="5" x="3" y="16" rx="1" />
   </IconWrapper>
 );
-
 
 export const User = (props) => (
   <IconWrapper {...props}>
@@ -90,7 +88,9 @@ export const Briefcase = (props) => (
   </IconWrapper>
 );
 
-export const Trash = (props) => ( //rfrf
+export const Trash = (
+  props, //rfrf
+) => (
   <IconWrapper {...props}>
     <path d="M10 11v6" />
     <path d="M14 11v6" />
@@ -112,5 +112,3 @@ export const Check = (props) => (
     <path d="M20 6 9 17l-5-5" />
   </IconWrapper>
 );
-
-

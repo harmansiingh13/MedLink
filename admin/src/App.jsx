@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import Login from './pages/Login';
 import { AdminContext } from './context/AdminContext';
 import Navbar from './components/Navbar';

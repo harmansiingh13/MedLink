@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
-import { assets } from '../assets/assets';
 import RelatedDoctors from '../components/RelatedDoctors';
 import { useToast } from '../context/ToastContext';
 import axios from 'axios';

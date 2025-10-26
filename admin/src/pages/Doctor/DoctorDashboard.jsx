@@ -1,4 +1,3 @@
-import React from 'react';
 import { DoctorContext } from '../../context/DoctorContext';
 import { useEffect } from 'react';
 import { useContext } from 'react';
@@ -66,26 +65,6 @@ const DoctorDashboard = () => {
                   <p className="text-gray-800 font-medium">{item.userData.name}</p>
                   <p className="text-gray-600">{slotDateFormat(item.slotDate)}</p>
                 </div>
-                {/* {item.cancelled ? (
-                  <p className="text-red-400 text-xs font-medium">Cancelled</p>
-                ) : item.isCompleted ? (
-                  <p className="text-green-500 text-xs font-medium">Completed</p>
-                ) : (
-                  <div className="flex gap-2">
-                    <img
-                      onClick={() => cancelAppointment(item._id)}
-                      src={assets.cancel_icon}
-                      alt=""
-                      className="w-10 cursor-pointer"
-                    />
-                    <img
-                      onClick={() => completeAppointment(item._id)}
-                      src={assets.tick_icon}
-                      alt=""
-                      className="w-10 cursor-pointer"
-                    />
-                  </div>
-                )} */}
 
                 {item.cancelled ? (
                   <span className="flex items-center justify-center bg-red-100 text-red-600 text-xs font-medium px-2 py-1 rounded-full">

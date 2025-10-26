@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
-import { assets } from '../assets/assets';
 import { useState } from 'react';
 import axios from 'axios';
 import { useEffect } from 'react';
@@ -140,7 +139,6 @@ const MyAppointments = () => {
   }, [token]);
   return (
     <div className="min-h-screen">
-      {/* Header Section */}
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
@@ -154,7 +152,6 @@ const MyAppointments = () => {
         </div>
       </div>
 
-      {/* Appointments List */}
       <div className="space-y-4">
         {appointments.length === 0 ? (
           <div className="text-center py-12 bg-white rounded-lg shadow-lg border border-gray-300">
@@ -179,7 +176,6 @@ const MyAppointments = () => {
                       />
                     </div>
 
-                    {/* Doctor Details */}
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
                         <div>
@@ -192,7 +188,6 @@ const MyAppointments = () => {
                         </div>
                       </div>
 
-                      {/* Appointment Details Grid */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                         <div className="space-y-1">
                           <div className="flex items-start gap-2">
@@ -222,7 +217,6 @@ const MyAppointments = () => {
                     </div>
                   </div>
 
-                  {/* Action Buttons */}
                   <div className="flex flex-col gap-3 lg:w-48">
                     {!item.cancelled && item.payment && !item.isCompleted && (
                       <button

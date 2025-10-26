@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { useState } from 'react';
 import { AdminContext } from '../context/AdminContext';
 import axios from 'axios';

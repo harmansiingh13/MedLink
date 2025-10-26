@@ -2,7 +2,7 @@ import { useContext, useEffect } from 'react';
 import { AdminContext } from '../../context/AdminContext';
 import { assets } from '../../assets/assets';
 import { AppContext } from '../../context/AppContext';
-import { Briefcase, CircleX, Trash, X } from '../../icons/Icons';
+import { Briefcase, X } from '../../icons/Icons';
 
 const Dashboard = () => {
   const { aToken, getDashData, cancelAppointment, dashData } = useContext(AdminContext);
