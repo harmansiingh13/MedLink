@@ -71,8 +71,7 @@ const MyProfile = () => {
                       />
                       <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-2xl opacity-0 group-hover:opacity-100 transition-all">
                         <div className="text-white text-center">
-                          <Upload className="w-6 h-6 mx-auto mb-1" />
-                          <span className="text-xs font-medium">Change Photo</span>
+                          <Upload className="w-7 h-7 mx-auto mb-1" />
                         </div>
                       </div>
                     </div>

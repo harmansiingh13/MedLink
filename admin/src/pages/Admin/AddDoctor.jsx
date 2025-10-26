@@ -5,6 +5,7 @@ import { useToast } from '../../context/ToastContext';
 import axios from 'axios';
 import { useLoader } from '../../context/LoaderContext';
 import Dropdown from '../../components/Dropdown';
+import { Upload } from '../../icons/Icons';
 
 const AddDoctor = () => {
   const { showLoader, hideLoader } = useLoader();
@@ -101,19 +102,27 @@ const AddDoctor = () => {
       <p className="mb-3 text-lg font-medium"> Add Doctor</p>
       <div className="bg-white px-8 py-8 border border-gray-200 rounded-xl shadow-lg w-full max-w-4xl">
         <div className="flex items-center gap-4 mb-8 text-gray-500">
-          <label htmlFor="doc-img">
+          <label htmlFor="doc-img" className="relative group cursor-pointer">
             <img
               src={docImg ? URL.createObjectURL(docImg) : assets.upload_area}
               alt=""
-              className="w-16 bg-gray-100 rounded-full cursor-pointer"
+              className="w-16 h-16 object-cover bg-gray-100 rounded-full"
             />
+            <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-all">
+              <div className="text-white text-center">
+                <Upload className="w-6 h-6 mx-auto mb-0.5" />
+              </div>
+            </div>
           </label>
+
           <input type="file" id="doc-img" hidden onChange={(e) => setDocImg(e.target.files[0])} />
+
           <p>
             Upload doctor <br />
             picture
           </p>
         </div>
+
         <div className="flex flex-col lg:flex-row items-start gap-10 text-gray-600">
           <div className="w-full lg:flex-1 flex flex-col gap-4">
             <div className="flex-1 flex flex-col gap-1">
