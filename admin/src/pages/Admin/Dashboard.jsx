@@ -2,6 +2,7 @@ import { useContext, useEffect } from 'react';
 import { AdminContext } from '../../context/AdminContext';
 import { assets } from '../../assets/assets';
 import { AppContext } from '../../context/AppContext';
+import { Briefcase, CircleX, Trash, X } from '../../icons/Icons';
 
 const Dashboard = () => {
   const { aToken, getDashData, cancelAppointment, dashData } = useContext(AdminContext);
@@ -17,7 +18,7 @@ const Dashboard = () => {
     dashData && (
       <div className="m-5">
         <div className="flex flex-wrap gap-3">
-          <div className="flex items-center gap-3 bg-white p-4 min-w-52 rounded-2xl border border-gray-100 shadow-lg cursor-pointer hover:scale-105 transition-transform">
+          <div className="flex items-center gap-3 bg-white p-4 min-w-52 rounded-xl border border-gray-200 shadow-lg cursor-pointer hover:scale-105 transition-transform">
             <img src={assets.doctor_icon} alt="Doctors" className="w-14" />
             <div>
               <p className="text-xl font-semibold text-gray-600">{dashData.doctors}</p>
@@ -25,7 +26,7 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-3 bg-white p-4 min-w-52 rounded-2xl border border-gray-100 shadow-lg cursor-pointer hover:scale-105 transition-transform">
+          <div className="flex items-center gap-3 bg-white p-4 min-w-52 rounded-xl border border-gray-200 shadow-lg cursor-pointer hover:scale-105 transition-transform">
             <img src={assets.appointments_icon} alt="Appointments" className="w-14" />
             <div>
               <p className="text-xl font-semibold text-gray-600">{dashData.appointments}</p>
@@ -33,7 +34,7 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-3 bg-white p-4 min-w-52 rounded-2xl border border-gray-100 shadow-lg cursor-pointer hover:scale-105 transition-transform">
+          <div className="flex items-center gap-3 bg-white p-4 min-w-52 rounded-xl border border-gray-200 shadow-lg cursor-pointer hover:scale-105 transition-transform">
             <img src={assets.patients_icon} alt="Patients" className="w-14" />
             <div>
               <p className="text-xl font-semibold text-gray-600">{dashData.patients}</p>
@@ -42,9 +43,10 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="bg-white shadow-lg rounded-2xl border border-gray-100 overflow-hidden mt-10">
+        <div className="bg-white shadow-lg rounded-xl border border-gray-200 overflow-hidden mt-10">
           <div className="flex items-center gap-2.5 px-6 py-4 border-b border-gray-100 bg-white">
-            <img src={assets.list_icon} alt="" />
+            {/* <img src={assets.list_icon} alt="" /> */}
+            <Briefcase className="w-7 text-primary" />
             <p className="font-semibold">Latest Bookings</p>
           </div>
 
@@ -61,15 +63,17 @@ const Dashboard = () => {
                 </div>
 
                 {item.cancelled ? (
-                  <p className="text-red-400 text-xs font-medium">Cancelled</p>
+                  <span className="flex items-center justify-center bg-red-100 text-red-600 text-xs font-medium px-2 py-1 rounded-full">
+                    Cancelled
+                  </span>
                 ) : item.isCompleted ? (
-                  <p className="text-green-500 text-xs font-medium">Completed</p>
+                  <span className="flex items-center justify-center bg-green-100 text-green-600 text-xs font-medium px-2 py-1 rounded-full">
+                    Completed
+                  </span>
                 ) : (
-                  <img
+                  <X
                     onClick={() => cancelAppointment(item._id)}
-                    src={assets.cancel_icon}
-                    alt="Cancel"
-                    className="w-10 cursor-pointer"
+                    className="w-8 text-white bg-red-500 rounded-full p-1.5 cursor-pointer mr-5 stroke-3"
                   />
                 )}
               </div>

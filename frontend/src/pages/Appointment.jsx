@@ -6,6 +6,7 @@ import RelatedDoctors from '../components/RelatedDoctors';
 import { useToast } from '../context/ToastContext';
 import axios from 'axios';
 import { useLoader } from '../context/LoaderContext';
+import { Info, Verified } from '../icons/Icons';
 
 const Appointment = () => {
   const { docId } = useParams();
@@ -158,7 +159,9 @@ const Appointment = () => {
 
           <div className="flex-1 border border-gray-400 rounded-lg p-8 py-7 bg-white mx-2 sm:mx-0 mt-[-80px] sm:mt-0">
             <p className="flex items-center gap-2 text-2xl font-medium text-gray-900">
-              {docInfo.name} <img className="w-5" src={assets.verified_icon} alt="" />
+              {docInfo.name}
+
+              <Verified className="w-6 h-6 text-[#0016e1]" />
             </p>
             <div className="flex items-center gap-2 text-sm mt-1 text-gray-600">
               <p>
@@ -170,7 +173,7 @@ const Appointment = () => {
             </div>
             <div>
               <p className="flex items-center gap-1 text-sm  font-medium text-gray-900 mt-3">
-                About <img src={assets.info_icon} alt="" />
+                About <Info className="w-5 h-5" />
               </p>
               <p className="text-sm text-gray-500 max-w-[700px] mt-1">{docInfo.about}</p>
             </div>

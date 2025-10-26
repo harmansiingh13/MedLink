@@ -3,6 +3,7 @@ import { AdminContext } from '../context/AdminContext';
 import { NavLink } from 'react-router-dom';
 import { assets } from '../assets/assets';
 import { DoctorContext } from '../context/DoctorContext';
+import { Calendar, Dashboard, SquarePlus, User, Users } from '../icons/Icons';
 
 const Sidebar = () => {
   const { aToken } = useContext(AdminContext);
@@ -20,8 +21,9 @@ const Sidebar = () => {
               }`
             }
           >
-            <img src={assets.home_icon} alt="" />
-            <p className='hidden md:block'>Dashboard</p>
+            {/* <img src={assets.home_icon} alt="" /> */}
+            <Dashboard className="w-7 h-7" />
+            <p className="hidden md:block">Dashboard</p>
           </NavLink>
           <NavLink
             to={'/all-appointments'}
@@ -31,8 +33,9 @@ const Sidebar = () => {
               }`
             }
           >
-            <img src={assets.appointment_icon} alt="" />
-            <p className='hidden md:block'>Appointments</p>
+            {/* <img src={assets.appointment_icon} alt="" /> */}
+            <Calendar className="w-7 h-7" />
+            <p className="hidden md:block">Appointments</p>
           </NavLink>
           <NavLink
             to={'/add-doctor'}
@@ -42,8 +45,9 @@ const Sidebar = () => {
               }`
             }
           >
-            <img src={assets.add_icon} alt="" />
-            <p className='hidden md:block'>Add Doctor</p>
+            {/* <img src={assets.add_icon} alt="" /> */}
+            <SquarePlus className="w-7 h-7" />
+            <p className="hidden md:block">Add Doctor</p>
           </NavLink>
           <NavLink
             to={'/doctor-list'}
@@ -53,8 +57,9 @@ const Sidebar = () => {
               }`
             }
           >
-            <img src={assets.people_icon} alt="" />
-            <p className='hidden md:block'>Doctors List</p>
+            {/* <img src={assets.people_icon} alt="" /> */}
+            <Users className="w-7 h-7" />
+            <p className="hidden md:block">Doctors List</p>
           </NavLink>
         </ul>
       )}
@@ -69,8 +74,9 @@ const Sidebar = () => {
               }`
             }
           >
-            <img src={assets.home_icon} alt="" />
-            <p className='hidden md:block'>Dashboard</p>
+            {/* <img src={assets.home_icon} alt="" /> */}
+            <Dashboard className="w-7 h-7" />
+            <p className="hidden md:block">Dashboard</p>
           </NavLink>
           <NavLink
             to={'/doctor-appointments'}
@@ -80,8 +86,9 @@ const Sidebar = () => {
               }`
             }
           >
-            <img src={assets.appointment_icon} alt="" />
-            <p className='hidden md:block'>Appointments</p>
+            {/* <img src={assets.appointment_icon} alt="" /> */}
+            <Calendar className="w-7 h-7" />
+            <p className="hidden md:block">Appointments</p>
           </NavLink>
 
           <NavLink
@@ -92,8 +99,9 @@ const Sidebar = () => {
               }`
             }
           >
-            <img src={assets.people_icon} alt="" />
-            <p className='hidden md:block'>Profile</p>
+            {/* <img src={assets.people_icon} alt="" /> */}
+            <User className="w-7 h-7" />
+            <p className="hidden md:block">Profile</p>
           </NavLink>
         </ul>
       )}

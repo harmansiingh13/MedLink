@@ -54,7 +54,7 @@ const DoctorProfile = () => {
             </p>
           </div>
 
-          <div className="bg-white border border-gray-100 rounded-2xl shadow-lg overflow-hidden">
+          <div className="bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden">
             <div className="p-6 sm:p-8">
               <div className="flex flex-col lg:flex-row gap-8">
                 <div className="flex-shrink-0">

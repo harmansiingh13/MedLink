@@ -1,5 +1,6 @@
 import { assets } from '../assets/assets';
 import { useNavigate } from 'react-router-dom';
+import { ArrowRight } from '../icons/Icons';
 const Banner = () => {
   const navigate = useNavigate();
   return (
@@ -14,9 +15,10 @@ const Banner = () => {
             navigate('/login');
             scrollTo(0, 0);
           }}
-          className="bg-white text-sm sm:text-base text-gray-600 px-8 py-3 rounded-full mt-6 hover:scale-105 transition-all cursor-pointer"
+          className="flex items-center gap-2 bg-white text-sm sm:text-base text-gray-600 px-8 py-3 rounded-full mt-6 hover:scale-105 transition-all cursor-pointer"
         >
           Create account
+          <ArrowRight className="w-5 h-5 text-gray-600" />
         </button>
       </div>
       <div className="hidden md:block md:w-1/2 lg:w-[370px] relative">

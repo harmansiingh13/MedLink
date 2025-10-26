@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { AdminContext } from '../../context/AdminContext';
 import { useEffect } from 'react';
 import { AppContext } from '../../context/AppContext';
-import { assets } from '../../assets/assets';
+import { Trash, X } from '../../icons/Icons';
 
 const AllApointments = () => {
   const { aToken, appointments, getAllAppointments, cancelAppointment } = useContext(AdminContext);
@@ -16,7 +16,7 @@ const AllApointments = () => {
   return (
     <div className="w-full max-w-6xl m-5">
       <p className="mb-3 text-lg font-medium">App Appointments</p>
-      <div className="bg-white border border-gray-100 rounded-2xl shadow-lg text-sm max-h-[80vh] min-h-[60vh] overflow-y-scroll">
+      <div className="bg-white border border-gray-200 rounded-xl shadow-lg text-sm max-h-[80vh] min-h-[60vh] overflow-y-scroll">
         <div className="hidden sm:grid grid-cols-[0.5fr_3fr_1fr_3fr_3fr_1fr_1fr] grid-flow-col py-3 px-6 border-b border-zinc-200">
           <p>#</p>
           <p>Patient</p>
@@ -54,15 +54,17 @@ const AllApointments = () => {
               {item.amount}
             </p>
             {item.cancelled ? (
-              <p className="text-red-400 text-xs font-medium">Cancelled</p>
+              <span className="flex items-center justify-center bg-red-100 text-red-600 text-xs font-medium px-2 py-1 rounded-full">
+                Cancelled
+              </span>
             ) : item.isCompleted ? (
-              <p className="text-green-500 text-xs font-medium">Completed</p>
+              <span className="flex items-center justify-center bg-green-100 text-green-600 text-xs font-medium px-2 py-1 rounded-full">
+                Completed
+              </span>
             ) : (
-              <img
+              <X
                 onClick={() => cancelAppointment(item._id)}
-                src={assets.cancel_icon}
-                alt=""
-                className="w-10 cursor-pointer"
+                className="w-8 text-white bg-red-500 rounded-full p-1.5 cursor-pointer ml-5 stroke-3"
               />
             )}
           </div>

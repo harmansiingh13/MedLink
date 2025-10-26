@@ -4,6 +4,7 @@ import { DoctorContext } from '../../context/DoctorContext';
 import { useEffect } from 'react';
 import { AppContext } from '../../context/AppContext';
 import { assets } from '../../assets/assets';
+import { Check, X } from '../../icons/Icons';
 
 const DoctorAppointments = () => {
   const { dToken, appointments, getAppointments, completeAppointment, cancelAppointment } =
@@ -18,7 +19,7 @@ const DoctorAppointments = () => {
   return (
     <div className="w-full max-w-6xl m-5">
       <p className="mb-3 text-lg font-medium">All Appointmemnts</p>
-      <div className="bg-white border border-gray-100 rounded-2xl shadow-lg text-sm max-h-[80vh] min-h-[50vh] overflow-y-scroll">
+      <div className="bg-white border border-gray-200 rounded-xl shadow-lg text-sm max-h-[80vh] min-h-[50vh] overflow-y-scroll">
         <div className="max-sm:hidden grid grid-cols-[0.5fr_2fr_1fr_1fr_3fr_1fr_1fr] gap-1 py-3 px-6 border-b border-gray-100">
           <p>#</p>
           <p>Patient</p>
@@ -52,22 +53,23 @@ const DoctorAppointments = () => {
               {item.amount}
             </p>
             {item.cancelled ? (
-              <p className="text-red-400 text-xs font-medium">Cancelled</p>
+              <span className="flex items-center justify-center bg-red-100 text-red-600 text-xs font-medium px-2 py-1 rounded-full">
+                Cancelled
+              </span>
             ) : item.isCompleted ? (
-              <p className="text-green-500 text-xs font-medium">Completed</p>
+              <span className="flex items-center justify-center bg-green-100 text-green-600 text-xs font-medium px-2 py-1 rounded-full">
+                Completed
+              </span>
             ) : (
-              <div className="flex">
-                <img
+              <div className="flex gap-2 ml-5">
+                <X
                   onClick={() => cancelAppointment(item._id)}
-                  src={assets.cancel_icon}
-                  alt=""
-                  className="w-10 cursor-pointer"
+                  className="w-8 text-white bg-red-500 rounded-full p-1.5 cursor-pointer stroke-3"
                 />
-                <img
+
+                <Check
                   onClick={() => completeAppointment(item._id)}
-                  src={assets.tick_icon}
-                  alt=""
-                  className="w-10 cursor-pointer"
+                  className="w-8 text-white bg-green-500 rounded-full p-1.5 cursor-pointer stroke-3"
                 />
               </div>
             )}

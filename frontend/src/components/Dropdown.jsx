@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { ChevronDown } from '../icons/Icons';
 
 const Dropdown = ({ options, placeholder = 'Select...', onSelect, className = '' }) => {
   const [open, setOpen] = useState(false);
@@ -29,17 +30,11 @@ const Dropdown = ({ options, placeholder = 'Select...', onSelect, className = ''
         className={`w-full ${className} flex justify-between items-center bg-white shadow-sm hover:bg-gray-50`}
       >
         <span>{selected || placeholder}</span>
-        <svg
+        <ChevronDown
           className={`w-4 h-4 ml-2 transform transition-transform ${
             open ? 'rotate-180' : 'rotate-0'
           }`}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={2}
-          viewBox="0 0 24 24"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-        </svg>
+        />
       </button>
 
       {open && (

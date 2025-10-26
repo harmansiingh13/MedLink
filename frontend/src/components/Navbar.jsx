@@ -4,6 +4,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
 import { useToast } from '../context/ToastContext';
 import UserDropdown from './UserDropdown';
+import { Menu, X } from '../icons/Icons';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -62,12 +63,14 @@ const Navbar = () => {
           </button>
         )}
 
-        <img
+        {/* <img
           onClick={() => setShowMenu(true)}
           className="w-6 md:hidden"
           src={assets.menu_icon}
           alt=""
-        />
+        /> */}
+
+        <Menu onClick={() => setShowMenu(true)} className="w-6 h-6 md:hidden" />
 
         <div
           className={`${
@@ -76,12 +79,8 @@ const Navbar = () => {
         >
           <div className="flex items-center justify-between px-5 py-6">
             <img className="w-36" src={assets.logo} alt="" />
-            <img
-              className="w-7"
-              onClick={() => setShowMenu(false)}
-              src={assets.cross_icon}
-              alt=""
-            />
+
+            <X className="w-7 h-7" onClick={() => setShowMenu(false)} />
           </div>
           <ul className="flex flex-col items-center gap-2 mt-5 px-5 text-lg font-medium">
             <NavLink to="/" onClick={() => setShowMenu(false)}>

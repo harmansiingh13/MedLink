@@ -99,7 +99,7 @@ const AddDoctor = () => {
   return (
     <form onSubmit={onSubmitHandler} className="m-5 w-full">
       <p className="mb-3 text-lg font-medium"> Add Doctor</p>
-      <div className="bg-white px-8 py-8 border border-gray-100 rounded-2xl shadow-lg w-full max-w-4xl">
+      <div className="bg-white px-8 py-8 border border-gray-200 rounded-xl shadow-lg w-full max-w-4xl">
         <div className="flex items-center gap-4 mb-8 text-gray-500">
           <label htmlFor="doc-img">
             <img

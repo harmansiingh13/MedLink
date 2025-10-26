@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useContext } from 'react';
 import { assets } from '../../assets/assets';
 import { AppContext } from '../../context/AppContext';
+import { Check, X } from '../../icons/Icons';
 
 const DoctorDashboard = () => {
   const { getDashData, setDashData, dashData, dToken, cancelAppointment, completeAppointment } =
@@ -20,7 +21,7 @@ const DoctorDashboard = () => {
     dashData && (
       <div className="m-5">
         <div className="flex flex-wrap gap-3">
-          <div className="flex items-center gap-2 bg-white p-4 min-w-52 rounded-2xl border border-gray-100 shadow-lg cursor-pointer hover:scale-105 transition-all">
+          <div className="flex items-center gap-2 bg-white p-4 min-w-52 rounded-xl border border-gray-200 shadow-lg cursor-pointer hover:scale-105 transition-all">
             <img src={assets.earning_icon} alt="" className="w-14" />
             <div>
               <p className="text-xl font-semibold text-gray-600">
@@ -31,7 +32,7 @@ const DoctorDashboard = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 bg-white p-4 min-w-52 rounded-2xl border border-gray-100 shadow-lg cursor-pointer hover:scale-105 transition-all">
+          <div className="flex items-center gap-2 bg-white p-4 min-w-52 rounded-xl border border-gray-200 shadow-lg cursor-pointer hover:scale-105 transition-all">
             <img src={assets.appointments_icon} alt="" className="w-14" />
             <div>
               <p className="text-xl font-semibold text-gray-600">{dashData.appointments}</p>
@@ -39,7 +40,7 @@ const DoctorDashboard = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 bg-white p-4 min-w-52 rounded-2xl border border-gray-100 shadow-lg cursor-pointer hover:scale-105 transition-all">
+          <div className="flex items-center gap-2 bg-white p-4 min-w-52 rounded-xl border border-gray-200 shadow-lg cursor-pointer hover:scale-105 transition-all">
             <img src={assets.patients_icon} alt="" className="w-14" />
             <div>
               <p className="text-xl font-semibold text-gray-600">{dashData.patients}</p>
@@ -48,7 +49,7 @@ const DoctorDashboard = () => {
           </div>
         </div>
 
-        <div className="bg-white shadow-lg rounded-2xl border border-gray-100 overflow-hidden mt-10">
+        <div className="bg-white shadow-lg rounded-xl border border-gray-200 overflow-hidden mt-10">
           <div className="flex items-center gap-2.5 px-6 py-4 border-b border-gray-100 bg-white">
             <img src={assets.list_icon} alt="" />
             <p className="font-semibold">Latest Bookings</p>
@@ -65,7 +66,7 @@ const DoctorDashboard = () => {
                   <p className="text-gray-800 font-medium">{item.userData.name}</p>
                   <p className="text-gray-600">{slotDateFormat(item.slotDate)}</p>
                 </div>
-                {item.cancelled ? (
+                {/* {item.cancelled ? (
                   <p className="text-red-400 text-xs font-medium">Cancelled</p>
                 ) : item.isCompleted ? (
                   <p className="text-green-500 text-xs font-medium">Completed</p>
@@ -82,6 +83,28 @@ const DoctorDashboard = () => {
                       src={assets.tick_icon}
                       alt=""
                       className="w-10 cursor-pointer"
+                    />
+                  </div>
+                )} */}
+
+                {item.cancelled ? (
+                  <span className="flex items-center justify-center bg-red-100 text-red-600 text-xs font-medium px-2 py-1 rounded-full">
+                    Cancelled
+                  </span>
+                ) : item.isCompleted ? (
+                  <span className="flex items-center justify-center bg-green-100 text-green-600 text-xs font-medium px-2 py-1 rounded-full">
+                    Completed
+                  </span>
+                ) : (
+                  <div className="flex gap-2">
+                    <X
+                      onClick={() => cancelAppointment(item._id)}
+                      className="w-8 text-white bg-red-500 rounded-full p-1.5 cursor-pointer stroke-3"
+                    />
+
+                    <Check
+                      onClick={() => completeAppointment(item._id)}
+                      className="w-8 text-white bg-green-500 rounded-full p-1.5 cursor-pointer stroke-3"
                     />
                   </div>
                 )}

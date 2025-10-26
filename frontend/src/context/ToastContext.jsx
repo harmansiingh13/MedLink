@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
-import { assets } from '../assets/assets';
+import { CircleCheck, CircleX } from '../icons/Icons';
 
 const ToastContext = createContext();
 
@@ -7,38 +7,27 @@ export const ToastContextProvider = ({ children }) => {
   const [toast, setToast] = useState(null);
   const [visible, setVisible] = useState(false);
 
-  const showToast = useCallback((message, type = 'info') => {
+  const showToast = useCallback((message, type) => {
+    if (!['success', 'error'].includes(type)) return;
+
     const id = Date.now();
     setToast({ id, message, type });
     setVisible(true);
 
     setTimeout(() => setVisible(false), 2000);
-
-    setTimeout(() => {
-      setToast((current) => (current?.id === id ? null : current));
-    }, 2400);
+    setTimeout(() => setToast((current) => (current?.id === id ? null : current)), 2400);
   }, []);
 
   const getToastIcon = (type) => {
-    switch (type) {
-      case 'success':
-        return assets.check_icon;
-      case 'error':
-        return assets.x_icon;
-      default:
-        return assets.info_icon;
-    }
+    return type === 'success' ? (
+      <CircleCheck className="w-5 h-5" />
+    ) : (
+      <CircleX className="w-5 h-5" />
+    );
   };
 
   const getToastStyle = (type) => {
-    switch (type) {
-      case 'success':
-        return 'bg-green-600 text-white';
-      case 'error':
-        return 'bg-red-600 text-white';
-      default:
-        return 'bg-gray-800 text-white';
-    }
+    return type === 'success' ? 'bg-green-600 text-white' : 'bg-red-600 text-white';
   };
 
   return (
@@ -56,12 +45,7 @@ export const ToastContextProvider = ({ children }) => {
               toast.type,
             )}`}
           >
-            <img
-              src={getToastIcon(toast.type)}
-              alt="toast icon"
-              className="w-5 h-5 invert brightness-0 select-none"
-              draggable="false"
-            />
+            {getToastIcon(toast.type)}
             <span>{toast.message}</span>
           </div>
         </div>
