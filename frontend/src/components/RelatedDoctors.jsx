@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../context/AppContext';
 import { useNavigate } from 'react-router-dom';
+import { ArrowRight } from '../icons/Icons';
 
 const RelatedDoctors = ({ docId, speciality }) => {
   const { doctors } = useContext(AppContext);
@@ -58,9 +59,10 @@ const RelatedDoctors = ({ docId, speciality }) => {
           navigate('/doctors');
           scrollTo(0, 0);
         }}
-        className="bg-blue-50 text-gray-600 px-12 py-3 rounded-full mt-10 cursor-pointer"
+        className="flex items-center gap-2 bg-blue-50 text-gray-600 px-12 py-3 rounded-full mt-10 cursor-pointer"
       >
         more
+        <ArrowRight className="w-5 h-5 text-gray-600" />
       </button>
     </div>
   );

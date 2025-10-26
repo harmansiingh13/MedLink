@@ -34,7 +34,7 @@ const AllApointments = () => {
             <p className="max-sm:hidden">{index + 1}</p>
 
             <div className="flex items-center gap-2">
-              <img src={item.userData.image} alt="" className="w-8 rounded-full" />
+              <img src={item.userData.image} alt="" className="w-8 h-8 object-cover rounded-full" />
               <p>{item.userData.name}</p>
             </div>
 

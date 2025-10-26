@@ -20,7 +20,6 @@ export const Mail = (props) => (
   </IconWrapper>
 );
 
-
 export const ArrowRight = (props) => (
   <IconWrapper {...props}>
     <path d="M5 12h14" />
@@ -87,9 +86,25 @@ export const Info = (props) => (
   </IconWrapper>
 );
 
+export const MapPinned = (props) => (
+  <IconWrapper {...props}>
+    <path d="M18 8c0 3.613-3.869 7.429-5.393 8.795a1 1 0 0 1-1.214 0C9.87 15.429 6 11.613 6 8a6 6 0 0 1 12 0" />
+    <circle cx="12" cy="8" r="2" />
+    <path d="M8.714 14h-3.71a1 1 0 0 0-.948.683l-2.004 6A1 1 0 0 0 3 22h18a1 1 0 0 0 .948-1.316l-2-6a1 1 0 0 0-.949-.684h-3.712" />
+  </IconWrapper>
+);
 
-
-
-
-
-
+export const Calendar = (props) => (
+  <IconWrapper {...props}>
+    <path d="M8 2v4" />
+    <path d="M16 2v4" />
+    <rect width="18" height="18" x="3" y="4" rx="2" />
+    <path d="M3 10h18" />
+    <path d="M8 14h.01" />
+    <path d="M12 14h.01" />
+    <path d="M16 14h.01" />
+    <path d="M8 18h.01" />
+    <path d="M12 18h.01" />
+    <path d="M16 18h.01" />
+  </IconWrapper>
+);

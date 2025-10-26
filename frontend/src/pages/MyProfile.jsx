@@ -56,7 +56,6 @@ const MyProfile = () => {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-gray-900">Profile Settings</h1>
-          <p className="text-gray-600 mt-2">Manage your personal information and preferences</p>
         </div>
 
         <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
@@ -73,7 +72,7 @@ const MyProfile = () => {
                       />
                       <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-2xl opacity-0 group-hover:opacity-100 transition-all">
                         <div className="text-white text-center">
-                          <Upload className="w-6 h-6 mx-auto mb-1"/>
+                          <Upload className="w-6 h-6 mx-auto mb-1" />
                           <span className="text-xs font-medium">Change Photo</span>
                         </div>
                       </div>
@@ -232,7 +231,7 @@ const MyProfile = () => {
               <>
                 <button
                   onClick={handleCancel}
-                  className="px-5 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition duration-200 font-medium"
+                  className="px-5 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition duration-200 font-medium cursor-pointer"
                 >
                   Cancel
                 </button>
