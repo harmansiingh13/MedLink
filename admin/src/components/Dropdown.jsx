@@ -43,7 +43,7 @@ const Dropdown = ({ options, placeholder = 'Select...', onSelect, className = ''
       </button>
 
       {open && (
-        <div className="absolute left-0 w-full mt-1 bg-white border border-zinc-200 rounded-md shadow-lg z-10">
+        <div className="absolute left-0 w-full mt-1 bg-white border border-zinc-200 rounded-md shadow-lg z-10 max-h-50 overflow-y-auto">
           {options.map((option, index) => (
             <div
               key={index}

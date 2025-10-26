@@ -1,61 +1,19 @@
 import { useState, useRef, useEffect } from 'react';
 
-const Dropdown = ({
-  options = [],
-  placeholder = 'Select...',
-  value,
-  onSelect,
-  className = '',
-  menuExtra = 0,
-}) => {
+const Dropdown = ({ options, placeholder = 'Select...', onSelect, className = '' }) => {
   const [open, setOpen] = useState(false);
-  const [menuWidth, setMenuWidth] = useState('auto');
-  const wrapperRef = useRef(null);
-  const buttonRef = useRef(null);
-  const resizeObserverRef = useRef(null);
+  const [selected, setSelected] = useState(null);
+  const dropdownRef = useRef(null);
 
-  const handleSelect = (val) => {
-    onSelect?.(val);
+  const handleSelect = (value) => {
+    setSelected(value);
+    onSelect?.(value);
     setOpen(false);
   };
 
-  const measure = () => {
-    const btn = buttonRef.current;
-    if (btn) {
-      const rect = btn.getBoundingClientRect();
-      setMenuWidth(Math.ceil(rect.width + menuExtra) + 'px');
-    } else {
-      setMenuWidth('auto');
-    }
-  };
-
   useEffect(() => {
-    if (open) {
-      measure();
-    }
-    const onResize = () => measure();
-    window.addEventListener('resize', onResize);
-
-    const btn = buttonRef.current;
-    if (btn && typeof ResizeObserver !== 'undefined') {
-      resizeObserverRef.current = new ResizeObserver(() => measure());
-      resizeObserverRef.current.observe(btn);
-    }
-
-    return () => {
-      window.removeEventListener('resize', onResize);
-      if (resizeObserverRef.current && btn) {
-        resizeObserverRef.current.unobserve(btn);
-        resizeObserverRef.current.disconnect();
-      }
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, menuExtra]);
-
-  // Close when clicked outside
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setOpen(false);
       }
     };
@@ -64,17 +22,13 @@ const Dropdown = ({
   }, []);
 
   return (
-    <div ref={wrapperRef} className="relative inline-block">
+    <div className="relative inline-block text-left" ref={dropdownRef}>
       <button
-        ref={buttonRef}
         type="button"
-        onClick={() => {
-          measure();
-          setOpen((prev) => !prev);
-        }}
-        className={`flex items-center  ${className}`}
+        onClick={() => setOpen((prev) => !prev)}
+        className={`w-full ${className} flex justify-between items-center bg-white shadow-sm hover:bg-gray-50`}
       >
-        <span className="truncate">{value || placeholder}</span>
+        <span>{selected || placeholder}</span>
         <svg
           className={`w-4 h-4 ml-2 transform transition-transform ${
             open ? 'rotate-180' : 'rotate-0'
@@ -89,16 +43,13 @@ const Dropdown = ({
       </button>
 
       {open && (
-        <div
-          className="absolute left-0 mt-1 bg-white border border-zinc-200 rounded-md shadow-md z-10 overflow-hidden"
-          style={{ width: menuWidth, boxSizing: 'border-box' }}
-        >
-          {options.map((option, idx) => (
+        <div className="absolute left-0 w-full mt-1 bg-white border border-zinc-200 rounded-md shadow-lg z-10 max-h-50 overflow-y-auto">
+          {options.map((option, index) => (
             <div
-              key={idx}
+              key={index}
               onClick={() => handleSelect(option)}
-              className={`px-3 py-1.5 text-sm cursor-pointer hover:bg-indigo-50 ${
-                value === option ? 'bg-indigo-50 font-medium' : ''
+              className={`px-4 py-2 cursor-pointer hover:bg-indigo-50 border-b border-zinc-200 ${
+                selected === option ? 'bg-indigo-50 font-medium' : ''
               }`}
             >
               {option}
