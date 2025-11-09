@@ -5,7 +5,7 @@ import RelatedDoctors from '../components/RelatedDoctors';
 import { useToast } from '../context/ToastContext';
 import axios from 'axios';
 import { useLoader } from '../context/LoaderContext';
-import { Info, Verified } from '../icons/Icons';
+import { Info, Verified } from '@/components/icons';
 
 const Appointment = () => {
   const { docId } = useParams();

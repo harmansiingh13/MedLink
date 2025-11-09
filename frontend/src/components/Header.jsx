@@ -1,5 +1,5 @@
 import { assets } from '../assets/assets';
-import { ArrowRight } from '../icons/Icons';
+import { ArrowRight } from '@/components/icons';
 
 const Header = () => {
   return (

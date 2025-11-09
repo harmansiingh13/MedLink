@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useContext } from 'react';
 import { assets } from '../../assets/assets';
 import { AppContext } from '../../context/AppContext';
-import { Check, X } from '../../icons/Icons';
+import { Briefcase, Check, X } from '@/components/icons';
 
 const DoctorDashboard = () => {
   const { getDashData, setDashData, dashData, dToken, cancelAppointment, completeAppointment } =
@@ -50,49 +50,62 @@ const DoctorDashboard = () => {
 
         <div className="bg-white shadow-lg rounded-xl border border-gray-200 overflow-hidden mt-10">
           <div className="flex items-center gap-2.5 px-6 py-4 border-b border-gray-100 bg-white">
-            <img src={assets.list_icon} alt="" />
-            <p className="font-semibold">Latest Bookings</p>
+            <Briefcase className="w-7 text-primary" />
+            <p className="font-semibold text-gray-800">Latest Bookings</p>
           </div>
 
-          <div className="divide-y divide-gray-100">
-            {dashData.latestAppointments.map((item, index) => (
-              <div
-                key={index}
-                className="flex items-center px-6 py-4 gap-3 hover:bg-gray-100 transition-colors"
-              >
-                <img
-                  src={item.userData.image}
-                  alt=""
-                  className="w-9 h-9 object-cover rounded-full"
-                />
-                <div className="flex-1 text-sm">
-                  <p className="text-gray-800 font-medium">{item.userData.name}</p>
-                  <p className="text-gray-600">{slotDateFormat(item.slotDate)}</p>
-                </div>
+          <div className="overflow-x-auto">
+            <table className="min-w-full text-sm text-gray-600">
+              <tbody className="divide-y divide-gray-100">
+                {dashData.latestAppointments.map((item, index) => (
+                  <tr key={index} className="hover:bg-gray-50 transition-colors">
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        <img
+                          src={item.userData.image}
+                          alt={item.userData.name}
+                          className="w-9 h-9 rounded-full object-cover"
+                        />
+                        <p className="font-medium text-gray-800">{item.userData.name}</p>
+                      </div>
+                    </td>
 
-                {item.cancelled ? (
-                  <span className="flex items-center justify-center bg-red-100 text-red-600 text-xs font-medium px-2 py-1 rounded-full">
-                    Cancelled
-                  </span>
-                ) : item.isCompleted ? (
-                  <span className="flex items-center justify-center bg-green-100 text-green-600 text-xs font-medium px-2 py-1 rounded-full">
-                    Completed
-                  </span>
-                ) : (
-                  <div className="flex gap-2">
-                    <X
-                      onClick={() => cancelAppointment(item._id)}
-                      className="w-8 text-white bg-red-500 rounded-full p-1.5 cursor-pointer stroke-3"
-                    />
+                    <td className="px-6 py-4">{slotDateFormat(item.slotDate)}</td>
 
-                    <Check
-                      onClick={() => completeAppointment(item._id)}
-                      className="w-8 text-white bg-green-500 rounded-full p-1.5 cursor-pointer stroke-3"
-                    />
-                  </div>
-                )}
-              </div>
-            ))}
+                    <td className="px-6 py-4 text-center">
+                      {item.cancelled ? (
+                        <span className="inline-flex items-center justify-center bg-red-100 text-red-600 text-xs font-medium px-2 py-1 rounded-full">
+                          Cancelled
+                        </span>
+                      ) : item.isCompleted ? (
+                        <span className="inline-flex items-center justify-center bg-green-100 text-green-600 text-xs font-medium px-2 py-1 rounded-full">
+                          Completed
+                        </span>
+                      ) : (
+                        <div className="flex items-center justify-center gap-2">
+                          <div className="flex items-center justify-center gap-2">
+                            <button
+                              onClick={() => cancelAppointment(item._id)}
+                              className="w-8 h-8 inline-flex items-center justify-center text-gray-500 bg-white border border-gray-300 hover:bg-red-600 hover:text-white rounded-full p-1 cursor-pointer transition-all duration-200 shadow-sm"
+                              title="Cancel appointment"
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => completeAppointment(item._id)}
+                              className="w-8 h-8 inline-flex items-center justify-center text-gray-500 bg-white border border-gray-300 hover:bg-green-600 hover:text-white rounded-full p-1 cursor-pointer transition-all duration-200 shadow-sm"
+                              title="Cancel appointment"
+                            >
+                              <Check className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

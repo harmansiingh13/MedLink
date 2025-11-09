@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useToast } from '../context/ToastContext';
 import { useLoader } from '../context/LoaderContext';
 import { DoctorContext } from '../context/DoctorContext';
-import { Briefcase, ShieldUser } from '../icons/Icons';
+import { Briefcase, ShieldUser } from '@/components/icons';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {

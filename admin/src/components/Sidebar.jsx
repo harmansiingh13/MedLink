@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { AdminContext } from '../context/AdminContext';
 import { NavLink } from 'react-router-dom';
 import { DoctorContext } from '../context/DoctorContext';
-import { Calendar, Dashboard, SquarePlus, User, Users } from '../icons/Icons';
+import { Calendar, Dashboard, SquarePlus, User, Users } from '@/components/icons';
 
 const Sidebar = () => {
   const { aToken } = useContext(AdminContext);

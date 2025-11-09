@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useCallback } from 'react';
-import { CircleCheck, CircleX } from '../icons/Icons';
+import { CircleCheck, CircleX } from '@/components/icons';
 
 const ToastContext = createContext();
 

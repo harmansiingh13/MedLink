@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../context/AppContext';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight } from '../icons/Icons';
+import { ArrowRight } from '@/components/icons';
 
 const RelatedDoctors = ({ docId, speciality }) => {
   const { doctors } = useContext(AppContext);

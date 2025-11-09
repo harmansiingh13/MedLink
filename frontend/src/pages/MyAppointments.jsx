@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { useLoader } from '../context/LoaderContext';
 import { useToast } from '../context/ToastContext';
 import { useNavigate } from 'react-router-dom';
-import { Calendar, MapPinned } from '../icons/Icons';
+import { Calendar, MapPinned } from '@/components/icons';
 
 const MyAppointments = () => {
   const navigate = useNavigate();

@@ -4,7 +4,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
 import { useToast } from '../context/ToastContext';
 import UserDropdown from './UserDropdown';
-import { Menu, X } from '../icons/Icons';
+import { Menu, X } from '@/components/icons';
 
 const Navbar = () => {
   const navigate = useNavigate();

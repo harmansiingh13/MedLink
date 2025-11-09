@@ -2,7 +2,7 @@ import { useContext, useEffect } from 'react';
 import { AdminContext } from '../../context/AdminContext';
 import { assets } from '../../assets/assets';
 import { AppContext } from '../../context/AppContext';
-import { Briefcase, X } from '../../icons/Icons';
+import { Briefcase, X } from '@/components/icons';
 
 const Dashboard = () => {
   const { aToken, getDashData, cancelAppointment, dashData } = useContext(AdminContext);
@@ -45,39 +45,52 @@ const Dashboard = () => {
 
         <div className="bg-white shadow-lg rounded-xl border border-gray-200 overflow-hidden mt-10">
           <div className="flex items-center gap-2.5 px-6 py-4 border-b border-gray-100 bg-white">
-            {/* <img src={assets.list_icon} alt="" /> */}
             <Briefcase className="w-7 text-primary" />
             <p className="font-semibold">Latest Bookings</p>
           </div>
 
-          <div className="divide-y divide-gray-100">
-            {dashData.latestAppointments.map((item, index) => (
-              <div
-                key={index}
-                className="flex items-center px-6 py-4 gap-3 hover:bg-gray-100 transition-colors"
-              >
-                <img src={item.docData.image} alt="" className="rounded-full w-10" />
-                <div className="flex-1 text-sm">
-                  <p className="text-gray-800 font-medium">{item.docData.name}</p>
-                  <p className="text-gray-600">{slotDateFormat(item.slotDate)}</p>
-                </div>
+          <div className="overflow-x-auto">
+            <table className="min-w-full text-sm text-gray-700">
+              <tbody>
+                {dashData.latestAppointments.map((item, index) => (
+                  <tr
+                    key={index}
+                    className="hover:bg-gray-50 transition-colors border-b border-gray-100"
+                  >
+                    <td className="px-6 py-4 flex items-center gap-3">
+                      <img
+                        src={item.docData.image}
+                        alt={item.docData.name}
+                        className="rounded-full w-10 h-10"
+                      />
+                      <span className="font-medium text-gray-800">{item.docData.name}</span>
+                    </td>
 
-                {item.cancelled ? (
-                  <span className="flex items-center justify-center bg-red-100 text-red-600 text-xs font-medium px-2 py-1 rounded-full">
-                    Cancelled
-                  </span>
-                ) : item.isCompleted ? (
-                  <span className="flex items-center justify-center bg-green-100 text-green-600 text-xs font-medium px-2 py-1 rounded-full">
-                    Completed
-                  </span>
-                ) : (
-                  <X
-                    onClick={() => cancelAppointment(item._id)}
-                    className="w-8 text-white bg-red-500 rounded-full p-1.5 cursor-pointer mr-5 stroke-3"
-                  />
-                )}
-              </div>
-            ))}
+                    <td className="px-6 py-4 text-gray-600">{slotDateFormat(item.slotDate)}</td>
+
+                    <td className="px-6 py-4 text-center">
+                      {item.cancelled ? (
+                        <span className="bg-red-100 text-red-600 text-xs font-medium px-2 py-1 rounded-full">
+                          Cancelled
+                        </span>
+                      ) : item.isCompleted ? (
+                        <span className="bg-green-100 text-green-600 text-xs font-medium px-2 py-1 rounded-full">
+                          Completed
+                        </span>
+                      ) : (
+                        <button
+                          onClick={() => cancelAppointment(item._id)}
+                          className="w-8 h-8 inline-flex items-center justify-center text-gray-500 bg-white border border-gray-300 hover:bg-red-600 hover:text-white rounded-full p-1 cursor-pointer transition-all duration-200 shadow-sm"
+                          title="Cancel appointment"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

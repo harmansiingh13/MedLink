@@ -15,15 +15,14 @@ export const LoaderContextProvider = ({ children }) => {
       {isLoading && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-gradient-to-br from-black/60 to-gray-900/70 backdrop-blur-sm animate-fade-in">
           <div className="relative flex flex-col items-center">
-            
-            <div className="absolute w-20 h-20 border-4 border-primary/20 rounded-full animate-ping-slow"></div>
+            <div className="absolute w-40 h-40 border-[8px] border-primary/20 rounded-full animate-ping-slow"></div>
 
-            <div className="relative w-14 h-14">
-              <div className="absolute inset-0 border-4 border-white/20 rounded-full"></div>
-              <div className="absolute inset-0 border-4 border-t-primary border-r-primary rounded-full animate-spin-slow"></div>
+            <div className="relative w-32 h-32">
+              <div className="absolute inset-0 border-[8px] border-white/20 rounded-full"></div>
+              <div className="absolute inset-0 border-[8px] border-t-primary border-r-primary rounded-full animate-spin-slow"></div>
             </div>
 
-            <p className="mt-5 text-white/90 font-semibold tracking-wide text-sm uppercase animate-pulse">
+            <p className="mt-7 text-white/90 font-semibold tracking-wide text-lg uppercase animate-pulse">
               Please wait...
             </p>
           </div>

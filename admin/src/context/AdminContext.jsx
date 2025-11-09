@@ -88,6 +88,7 @@ const AdminContextProvider = (props) => {
       if (data.success) {
         showToast(data.message, 'success');
         getAllAppointments();
+        getDashData();
       } else {
         showToast(data.message, 'error');
       }

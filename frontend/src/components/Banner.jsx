@@ -1,6 +1,6 @@
 import { assets } from '../assets/assets';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight } from '../icons/Icons';
+import { ArrowRight } from '@/components/icons';
 const Banner = () => {
   const navigate = useNavigate();
   return (

@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useToast } from '../context/ToastContext';
 import { useLoader } from '../context/LoaderContext';
 import Dropdown from '../components/Dropdown';
-import { Mail, Upload } from '../icons/Icons';
+import { Mail, Upload } from '@/components/icons';
 
 const MyProfile = () => {
   const { userData, setUserData, token, backendUrl, loadUserProfileData } = useContext(AppContext);

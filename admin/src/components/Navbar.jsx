@@ -4,7 +4,7 @@ import { AdminContext } from '../context/AdminContext';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '../context/ToastContext';
 import { DoctorContext } from '../context/DoctorContext';
-import { LogOut } from '../icons/Icons';
+import { LogOut } from '@/components/icons';
 
 const Navbar = () => {
   const { aToken, setAToken } = useContext(AdminContext);

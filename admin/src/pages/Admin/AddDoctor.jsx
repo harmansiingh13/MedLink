@@ -5,7 +5,7 @@ import { useToast } from '../../context/ToastContext';
 import axios from 'axios';
 import { useLoader } from '../../context/LoaderContext';
 import Dropdown from '../../components/Dropdown';
-import { Upload } from '../../icons/Icons';
+import { Upload } from '@/components/icons';
 
 const AddDoctor = () => {
   const { showLoader, hideLoader } = useLoader();

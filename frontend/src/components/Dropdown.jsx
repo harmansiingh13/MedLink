@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { ChevronDown } from '../icons/Icons';
+import { ChevronDown } from '@/components/icons';
 
 const Dropdown = ({ options, placeholder = 'Select...', onSelect, className = '' }) => {
   const [open, setOpen] = useState(false);

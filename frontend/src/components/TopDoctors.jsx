@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
-import { ArrowRight } from '../icons/Icons';
+import { ArrowRight } from '@/components/icons';
 
 const TopDoctors = () => {
   const navigate = useNavigate();
