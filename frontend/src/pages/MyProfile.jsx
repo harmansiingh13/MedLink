@@ -1,54 +1,66 @@
-import { useContext, useState } from 'react';
-import { AppContext } from '../context/AppContext';
-import axios from 'axios';
-import { useToast } from '../context/ToastContext';
-import { useLoader } from '../context/LoaderContext';
-import Dropdown from '../components/Dropdown';
-import { Mail, Upload } from '@/components/icons';
+import { useState, useEffect } from "react";
+import Dropdown from "../components/Dropdown";
+import { Mail, Upload } from "@/components/icons";
+import { Loader } from "../components/Loader";
+import { useDispatch } from "react-redux";
+import { showToast } from "../store/toastSlice";
+import { useUpdateProfile, useUserProfile } from "../utils/hooks/useMyProfile";
+import { useQueryClient } from "@tanstack/react-query";
 
 const MyProfile = () => {
-  const { userData, setUserData, token, backendUrl, loadUserProfileData } = useContext(AppContext);
-  const { showLoader, hideLoader } = useLoader();
-  const { showToast } = useToast();
+  const dispatch = useDispatch();
+  const queryClient = useQueryClient();
+
+  const [editData, setEditData] = useState(null);
   const [isEdit, setIsEdit] = useState(false);
-  const [image, setImage] = useState(false);
+  const [image, setImage] = useState(null);
 
-  const updateUserProfileData = async () => {
-    try {
-      showLoader();
-      const formData = new FormData();
-      formData.append('name', userData.name);
-      formData.append('phone', userData.phone);
-      formData.append('address', JSON.stringify(userData.address));
-      formData.append('gender', userData.gender);
-      formData.append('dob', userData.dob);
+  const { data: userData, isLoading } = useUserProfile(true);
 
-      image && formData.append('image', image);
+  const updateProfileMutation = useUpdateProfile();
 
-      const { data } = await axios.post(backendUrl + '/api/user/update-profile', formData, {
-        headers: { token },
-      });
+  const loader = updateProfileMutation.isPending || isLoading;
 
-      if (data.success) {
-        showToast(data.message, 'success');
-        await loadUserProfileData();
-        setIsEdit(false);
-      } else {
-        showToast(data.message, 'error');
-      }
-    } catch (error) {
-      console.log(error);
-      showToast(error.message, 'error');
-    } finally {
-      hideLoader();
+  useEffect(() => {
+    if (userData && !isEdit) {
+      setEditData(userData);
     }
+  }, [userData, isEdit]);
+
+  const updateUserProfileData = () => {
+    const formData = new FormData();
+    formData.append("name", editData.name);
+    formData.append("phone", editData.phone);
+    formData.append("address", JSON.stringify(editData.address));
+    formData.append("gender", editData.gender);
+    formData.append("dob", editData.dob);
+
+    if (image) formData.append("image", image);
+
+    updateProfileMutation.mutate(formData, {
+      onSuccess: (data) => {
+        if (data.success) {
+          dispatch(showToast({ message: data.message, type: "success" }));
+          queryClient.invalidateQueries(["user-profile"]);
+          setIsEdit(false);
+          setImage(null);
+        } else {
+          dispatch(showToast({ message: data.message, type: "error" }));
+        }
+      },
+      onError: (err) => {
+        dispatch(showToast({ message: err.message, type: "error" }));
+      },
+    });
   };
 
   const handleCancel = () => {
     setIsEdit(false);
-    setImage(false);
-    loadUserProfileData();
+    setEditData(userData);
+    setImage(null);
   };
+
+  if (loader || !editData) return <Loader />;
 
   return (
     userData && (
@@ -62,10 +74,15 @@ const MyProfile = () => {
             <div className="flex flex-col sm:flex-row items-center gap-6">
               <div className="relative group">
                 {isEdit ? (
-                  <label htmlFor="image" className="cursor-pointer block relative">
+                  <label
+                    htmlFor="image"
+                    className="cursor-pointer block relative"
+                  >
                     <div className="relative">
                       <img
-                        src={image ? URL.createObjectURL(image) : userData.image}
+                        src={
+                          image ? URL.createObjectURL(image) : editData.image
+                        }
                         alt="Profile"
                         className="w-24 h-24 sm:w-28 sm:h-28 object-cover rounded-2xl border border-gray-300 transition-all shadow-sm"
                       />
@@ -86,7 +103,7 @@ const MyProfile = () => {
                 ) : (
                   <div className="relative">
                     <img
-                      src={userData.image}
+                      src={editData.image}
                       alt="Profile"
                       className="w-24 h-24 sm:w-28 sm:h-28 object-cover rounded-2xl border border-gray-300 shadow-sm"
                     />
@@ -99,19 +116,25 @@ const MyProfile = () => {
                   <div className="space-y-3">
                     <input
                       type="text"
-                      value={userData.name}
-                      onChange={(e) => setUserData((prev) => ({ ...prev, name: e.target.value }))}
+                      value={editData.name}
+                      onChange={(e) =>
+                        setEditData((prev) => ({
+                          ...prev,
+                          name: e.target.value,
+                        }))
+                      }
                       className="text-2xl font-bold bg-gray-50 border border-gray-300 rounded-lg px-2 py-2 w-full max-w-md focus:ring-0 focus:outline-none"
                       placeholder="Enter your name"
                     />
                   </div>
                 ) : (
                   <div>
-                    <h2 className="text-2xl font-bold text-gray-900">{userData.name}</h2>
+                    <h2 className="text-2xl font-bold text-gray-900">
+                      {editData.name}
+                    </h2>
                     <p className="text-gray-500 mt-1 flex items-center justify-center sm:justify-start gap-2">
                       <Mail className="w-4" />
-
-                      {userData.email}
+                      {editData.email}
                     </p>
                   </div>
                 )}
@@ -121,36 +144,47 @@ const MyProfile = () => {
 
           <div className="px-6 py-6 border-b border-gray-100">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Contact Information</h3>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Contact Information
+              </h3>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">Phone Number</label>
+                <label className="text-sm font-medium text-gray-700">
+                  Phone Number
+                </label>
                 {isEdit ? (
                   <input
                     type="tel"
-                    value={userData.phone}
-                    onChange={(e) => setUserData((prev) => ({ ...prev, phone: e.target.value }))}
+                    value={editData.phone}
+                    onChange={(e) =>
+                      setEditData((prev) => ({
+                        ...prev,
+                        phone: e.target.value,
+                      }))
+                    }
                     className="w-full bg-gray-50 border border-gray-300 rounded-lg px-2 py-2 focus:ring-0 focus:outline-none"
                     placeholder="Enter phone number"
                   />
                 ) : (
                   <p className="text-gray-900 font-medium py-3">
-                    {userData.phone || 'Not provided'}
+                    {editData.phone || "Not provided"}
                   </p>
                 )}
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">Address</label>
+                <label className="text-sm font-medium text-gray-700">
+                  Address
+                </label>
                 {isEdit ? (
                   <div className="space-y-3">
                     <input
                       type="text"
-                      value={userData.address.line1}
+                      value={editData.address.line1}
                       onChange={(e) =>
-                        setUserData((prev) => ({
+                        setEditData((prev) => ({
                           ...prev,
                           address: { ...prev.address, line1: e.target.value },
                         }))
@@ -160,22 +194,22 @@ const MyProfile = () => {
                     />
                     <input
                       type="text"
-                      value={userData.address.line2}
+                      value={editData.address.line2}
                       onChange={(e) =>
-                        setUserData((prev) => ({
+                        setEditData((prev) => ({
                           ...prev,
                           address: { ...prev.address, line2: e.target.value },
                         }))
                       }
                       className="w-full bg-gray-50 border border-gray-300 rounded-lg px-2 py-2 focus:ring-0 focus:outline-none"
-                      placeholder="Address line 2 "
+                      placeholder="Address line 2"
                     />
                   </div>
                 ) : (
                   <div className="text-gray-900 py-3">
-                    <p className="font-medium">{userData.address.line1}</p>
-                    {userData.address.line2 && (
-                      <p className="text-gray-600">{userData.address.line2}</p>
+                    <p className="font-medium">{editData.address.line1}</p>
+                    {editData.address.line2 && (
+                      <p className="text-gray-600">{editData.address.line2}</p>
                     )}
                   </div>
                 )}
@@ -185,39 +219,52 @@ const MyProfile = () => {
 
           <div className="px-6 py-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Basic Information</h3>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Basic Information
+              </h3>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700 pr-2">Gender</label>
+                <label className="text-sm font-medium text-gray-700 pr-2">
+                  Gender
+                </label>
                 {isEdit ? (
                   <Dropdown
-                    options={['Male', 'Female']}
-                    value={userData.gender}
-                    onSelect={(val) => setUserData((p) => ({ ...p, gender: val }))}
+                    options={["Male", "Female"]}
+                    value={editData.gender}
+                    onSelect={(val) =>
+                      setEditData((prev) => ({ ...prev, gender: val }))
+                    }
                     placeholder="Select Gender"
                     className="w-full bg-gray-50 border border-gray-300 rounded-lg px-2 py-2 focus:ring-0 focus:outline-none"
                   />
                 ) : (
                   <p className="text-gray-900 font-medium py-3">
-                    {userData.gender || 'Not specified'}
+                    {editData.gender || "Not specified"}
                   </p>
                 )}
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">Date of Birth</label>
+                <label className="text-sm font-medium text-gray-700">
+                  Date of Birth
+                </label>
                 {isEdit ? (
                   <input
                     type="date"
-                    value={userData.dob}
-                    onChange={(e) => setUserData((prev) => ({ ...prev, dob: e.target.value }))}
+                    value={editData.dob}
+                    onChange={(e) =>
+                      setEditData((prev) => ({
+                        ...prev,
+                        dob: e.target.value,
+                      }))
+                    }
                     className="w-full bg-gray-50 border border-gray-300 rounded-lg px-2 py-2 focus:ring-0 focus:outline-none"
                   />
                 ) : (
                   <p className="text-gray-900 font-medium py-3">
-                    {userData.dob || 'Not specified'}
+                    {editData.dob || "Not specified"}
                   </p>
                 )}
               </div>

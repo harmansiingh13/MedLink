@@ -1,0 +1,27 @@
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { API_PATHS } from "../ApiPaths";
+import axiosInstance from "../AxiosInstance";
+
+export const useUpdateProfile = () => {
+  return useMutation({
+    mutationFn: async (formData) => {
+      const { data } = await axiosInstance.post(
+        API_PATHS.AUTH.UPDATE_PROFILE,
+        formData
+      );
+      return data;
+    },
+  });
+};
+
+export const useUserProfile = (enabled) => {
+  return useQuery({
+    queryKey: ["user-profile"],
+    enabled, // only run when token exists
+    queryFn: async () => {
+      const { data } = await axiosInstance.get(API_PATHS.AUTH.GET_USER);
+      if (!data.success) throw new Error(data.message);
+      return data.userData;
+    },
+  });
+};

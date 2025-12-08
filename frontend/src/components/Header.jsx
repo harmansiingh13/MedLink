@@ -1,5 +1,5 @@
-import { assets } from '../assets/assets';
-import { ArrowRight } from '@/components/icons';
+import { assets } from "../assets/assets";
+import { ArrowRight } from "@/components/icons";
 
 const Header = () => {
   return (
@@ -11,8 +11,9 @@ const Header = () => {
         <div className="flex flex-col md:flex-row items-center gap-3 text-white text-sm font-light">
           <img className="w-28" src={assets.group_profiles} alt="" />
           <p>
-            Simply browse through our extensive list of trusted doctors,{' '}
-            <br className="hidden sm:block" /> schedule your appointment hassle-free
+            Simply browse through our extensive list of trusted doctors,{" "}
+            <br className="hidden sm:block" /> schedule your appointment
+            hassle-free
           </p>
         </div>
         <a

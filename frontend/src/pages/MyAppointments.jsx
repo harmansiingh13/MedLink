@@ -1,80 +1,59 @@
-import { useContext } from 'react';
-import { AppContext } from '../context/AppContext';
-import { useState } from 'react';
-import axios from 'axios';
-import { useEffect } from 'react';
-import { useLoader } from '../context/LoaderContext';
-import { useToast } from '../context/ToastContext';
-import { useNavigate } from 'react-router-dom';
-import { Calendar, MapPinned } from '@/components/icons';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Calendar, MapPinned } from "@/components/icons";
+import axiosInstance from "../utils/AxiosInstance";
+import { API_PATHS } from "../utils/ApiPaths";
+import { Loader } from "../components/Loader";
+import { useDispatch, useSelector } from "react-redux";
+import { showToast } from "../store/toastSlice";
+import {
+  useCancelAppointment,
+  useUserAppointments,
+} from "../utils/hooks/useMyAppointments";
 
 const MyAppointments = () => {
   const navigate = useNavigate();
-  const { backendUrl, token, getDoctorsData } = useContext(AppContext);
-  const { showLoader, hideLoader } = useLoader();
-  const { showToast } = useToast();
-  const [appointments, setAppointments] = useState([]);
+  const token = useSelector((state) => state.app.token);
+  const [rzpLoader, setRzpLoader] = useState(false);
+  const dispatch = useDispatch();
+  const { data: appointments = [], isLoading: isAppointmentsLoading } =
+    useUserAppointments(!!token);
+  const cancelAppointmentMutation = useCancelAppointment();
+
   const months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
   ];
 
   const slotDateFormat = (slotDate) => {
-    const [day, month, year] = slotDate.split('_');
+    const [day, month, year] = slotDate.split("_");
     return `${day} ${months[Number(month) - 1]} ${year}`;
   };
 
-  const getUserAppointments = async () => {
-    try {
-      showLoader();
-      const { data } = await axios.get(backendUrl + '/api/user/appointments', {
-        headers: { token },
-      });
-
-      if (data.success) {
-        setAppointments(data.appointments.reverse());
-        console.log(data.appointments);
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      hideLoader();
-    }
-  };
-
-  const cancelAppointment = async (appointmentId) => {
-    try {
-      showLoader();
-      const { data } = await axios.post(
-        backendUrl + '/api/user/cancel-appointment',
-        {
-          appointmentId,
-        },
-        { headers: { token } },
-      );
-
-      if (data.success) {
-        showToast(data.message, 'success');
-        getUserAppointments();
-        getDoctorsData();
-      } else {
-        showToast(data.message, 'error');
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      hideLoader();
-    }
+  const handleCancelAppointment = (appointmentId) => {
+    cancelAppointmentMutation.mutate(appointmentId, {
+      onSuccess: (data) => {
+        dispatch(showToast({ message: data.message, type: "success" }));
+      },
+      onError: (error) => {
+        dispatch(
+          showToast({
+            message: error.message || "Failed to cancel appointment",
+            type: "error",
+          })
+        );
+      },
+    });
   };
 
   const initPay = (order) => {
@@ -82,28 +61,28 @@ const MyAppointments = () => {
       key: import.meta.env.VITE_RAZORPAY_KEY_ID,
       amount: order.amount,
       currency: order.currency,
-      name: 'Appointment Payment',
-      description: 'Appointment Payment',
+      name: "Appointment Payment",
+      description: "Appointment Payment",
       order_id: order.id,
       receipt: order.receipt,
       handler: async (res) => {
         console.log(res);
 
         try {
-          showLoader();
-          const { data } = await axios.post(backendUrl + '/api/user/verify-razorpay', res, {
-            headers: { token },
-          });
+          setRzpLoader(true);
+          const { data } = await axiosInstance.post(
+            API_PATHS.APPOINTMENT.VERIFY_RAZORPAY,
+            res
+          );
 
           if (data.success) {
-            getUserAppointments();
-            navigate('/my-appointments');
+            navigate("/my-appointments");
           }
         } catch (error) {
           console.log(error);
-          showToast(error.message, 'error');
+          dispatch(showToast({ message: error.message, type: "error" }));
         } finally {
-          hideLoader();
+          setRzpLoader(false);
         }
       },
     };
@@ -113,12 +92,11 @@ const MyAppointments = () => {
 
   const appointmentRazorpay = async (appointmentId) => {
     try {
-      showLoader();
-      console.log('appointmentRazorpay() called with:', appointmentId);
-      const { data } = await axios.post(
-        backendUrl + '/api/user/payment-razorpay',
-        { appointmentId },
-        { headers: { token } },
+      setRzpLoader(true);
+      console.log("appointmentRazorpay() called with:", appointmentId);
+      const { data } = await axiosInstance.post(
+        API_PATHS.APPOINTMENT.PAY_WITH_RAZORPAY,
+        { appointmentId }
       );
 
       if (data.success) {
@@ -128,25 +106,28 @@ const MyAppointments = () => {
     } catch (error) {
       console.log(error);
     } finally {
-      hideLoader();
+      setRzpLoader(false);
     }
   };
 
-  useEffect(() => {
-    if (token) {
-      getUserAppointments();
-    }
-  }, [token]);
+  const loader =
+    isAppointmentsLoading || cancelAppointmentMutation.isPending || rzpLoader;
+
+  if (loader) return <Loader />;
+
   return (
     <div className="min-h-screen">
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">My Appointments</h1>
+            <h1 className="text-2xl font-bold text-gray-900">
+              My Appointments
+            </h1>
           </div>
           <div className="text-right">
             <p className="text-sm font-medium text-gray-700">
-              Total Appointments: <span className="text-indigo-600">{appointments.length}</span>
+              Total Appointments:{" "}
+              <span className="text-indigo-600">{appointments.length}</span>
             </p>
           </div>
         </div>
@@ -158,12 +139,19 @@ const MyAppointments = () => {
             <div className="mx-auto w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
               <Calendar className="w-8 h-8 text-gray-400" />
             </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No appointments scheduled</h3>
-            <p className="text-gray-500 max-w-sm mx-auto">You don't have any appointments yet.</p>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
+              No appointments scheduled
+            </h3>
+            <p className="text-gray-500 max-w-sm mx-auto">
+              You don't have any appointments yet.
+            </p>
           </div>
         ) : (
           appointments.map((item, index) => (
-            <div key={index} className="bg-white rounded-lg shadow-lg border border-gray-300">
+            <div
+              key={index}
+              className="bg-white rounded-lg shadow-lg border border-gray-300"
+            >
               <div className="p-6">
                 <div className="flex flex-col lg:flex-row gap-6">
                   {/* Doctor Image and Basic Info */}
@@ -193,10 +181,16 @@ const MyAppointments = () => {
                           <div className="flex items-start gap-2">
                             <MapPinned className="w-4 h-4 text-gray-400 mt-0.5" />
                             <div>
-                              <p className="font-medium text-gray-700">Address</p>
-                              <p className="text-gray-600">{item.docData.address.line1}</p>
+                              <p className="font-medium text-gray-700">
+                                Address
+                              </p>
+                              <p className="text-gray-600">
+                                {item.docData.address.line1}
+                              </p>
                               {item.docData.address.line2 && (
-                                <p className="text-gray-600">{item.docData.address.line2}</p>
+                                <p className="text-gray-600">
+                                  {item.docData.address.line2}
+                                </p>
                               )}
                             </div>
                           </div>
@@ -206,9 +200,12 @@ const MyAppointments = () => {
                           <div className="flex items-start gap-2">
                             <Calendar className="w-4 h-4 text-gray-400 mt-0.5" />
                             <div>
-                              <p className="font-medium text-gray-700">Date & Time</p>
+                              <p className="font-medium text-gray-700">
+                                Date & Time
+                              </p>
                               <p className="text-gray-600">
-                                {slotDateFormat(item.slotDate)} at {item.slotTime}
+                                {slotDateFormat(item.slotDate)} at{" "}
+                                {item.slotTime}
                               </p>
                             </div>
                           </div>
@@ -238,7 +235,7 @@ const MyAppointments = () => {
 
                     {!item.cancelled && !item.isCompleted && (
                       <button
-                        onClick={() => cancelAppointment(item._id)}
+                        onClick={() => handleCancelAppointment(item._id)}
                         className="w-full px-4 py-2.5 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer"
                       >
                         Cancel

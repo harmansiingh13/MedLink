@@ -1,73 +1,94 @@
-import { useContext, useEffect, useState } from 'react';
-import { AppContext } from '../context/AppContext';
-import axios from 'axios';
-import { useToast } from '../context/ToastContext';
-import { useNavigate } from 'react-router-dom';
-import { useLoader } from '../context/LoaderContext';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Loader } from "../components/Loader";
+import { showToast } from "../store/toastSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useRegister, useSignin } from "../utils/hooks/useLogin";
+import { setToken } from "../store/appSlice";
 
 const Login = () => {
-  const { backendUrl, token, setToken } = useContext(AppContext);
-  const { showToast } = useToast();
-  const { showLoader, hideLoader } = useLoader();
   const navigate = useNavigate();
-  const [state, setState] = useState('Sign Up');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
+  const [state, setState] = useState("Sign Up");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.app.token);
+  const registerMutation = useRegister();
+  const signinMutation = useSignin();
 
-  const onSubmitHandler = async (e) => {
+  const loader = registerMutation.isPending || signinMutation.isPending;
+
+  const onSubmitHandler = (e) => {
     e.preventDefault();
-    try {
-      showLoader();
-      if (state === 'Sign Up') {
-        const { data } = await axios.post(backendUrl + '/api/user/register', {
-          name,
-          email,
-          password,
-        });
 
-        if (data.success) {
-          localStorage.setItem('token', data.token);
-          setToken(data.token);
-          showToast('Account created successfully', 'success');
-        } else {
-          showToast(data.message, 'error');
+    if (state === "Sign Up") {
+      registerMutation.mutate(
+        { name, email, password },
+        {
+          onSuccess: (data) => {
+            if (data.success) {
+              localStorage.setItem("token", data.token);
+              dispatch(setToken(data.token));
+              dispatch(
+                showToast({
+                  message: "Account created successfully",
+                  type: "success",
+                })
+              );
+              navigate("/");
+            } else {
+              dispatch(showToast({ message: data.message, type: "error" }));
+            }
+          },
+          onError: (err) => {
+            dispatch(showToast({ message: err.message, type: "error" }));
+          },
         }
-      } else {
-        const { data } = await axios.post(backendUrl + '/api/user/login', { email, password });
-
-        if (data.success) {
-          localStorage.setItem('token', data.token);
-          setToken(data.token);
-          showToast('Login successful', 'success');
-        } else {
-          showToast(data.message, 'error');
+      );
+    } else {
+      signinMutation.mutate(
+        { email, password },
+        {
+          onSuccess: (data) => {
+            if (data.success) {
+              localStorage.setItem("token", data.token);
+              dispatch(setToken(data.token));
+              dispatch(
+                showToast({ message: "Login successful", type: "success" })
+              );
+              navigate("/");
+            } else {
+              dispatch(showToast({ message: data.message, type: "error" }));
+            }
+          },
+          onError: (err) => {
+            dispatch(showToast({ message: err.message, type: "error" }));
+          },
         }
-      }
-    } catch (error) {
-      showToast(error.message, 'error');
-    } finally {
-      hideLoader();
+      );
     }
   };
 
   useEffect(() => {
     if (token) {
-      navigate('/');
+      navigate("/");
     }
   }, [token]);
+
+  if (loader) return <Loader />;
 
   return (
     <div className="py-10 flex flex-col justify-center">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="text-center">
           <h2 className="text-3xl font-bold text-gray-900">
-            {state === 'Sign Up' ? 'Create your account' : 'Welcome back'}
+            {state === "Sign Up" ? "Create your account" : "Welcome back"}
           </h2>
           <p className="mt-2 text-sm text-gray-600">
-            {state === 'Sign Up'
-              ? 'Please fill in your details to create an account'
-              : 'Sign in to your account to continue'}
+            {state === "Sign Up"
+              ? "Please fill in your details to create an account"
+              : "Sign in to your account to continue"}
           </p>
         </div>
       </div>
@@ -75,9 +96,12 @@ const Login = () => {
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-6 shadow-lg rounded-lg sm:px-10 border border-gray-100">
           <form onSubmit={onSubmitHandler} className="space-y-6">
-            {state === 'Sign Up' && (
+            {state === "Sign Up" && (
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Full Name
                 </label>
                 <div className="mt-1">
@@ -97,7 +121,10 @@ const Login = () => {
             )}
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Email address
               </label>
               <div className="mt-1">
@@ -116,7 +143,10 @@ const Login = () => {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Password
               </label>
               <div className="mt-1">
@@ -124,7 +154,9 @@ const Login = () => {
                   id="password"
                   name="password"
                   type="password"
-                  autoComplete={state === 'Sign Up' ? 'new-password' : 'current-password'}
+                  autoComplete={
+                    state === "Sign Up" ? "new-password" : "current-password"
+                  }
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -139,7 +171,7 @@ const Login = () => {
                 type="submit"
                 className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary cursor-pointer"
               >
-                {state === 'Sign Up' ? 'Create Account' : 'Sign In'}
+                {state === "Sign Up" ? "Create Account" : "Sign In"}
               </button>
             </div>
           </form>
@@ -156,18 +188,20 @@ const Login = () => {
 
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600">
-                {state === 'Sign Up' ? 'Already have an account?' : "Don't have an account?"}{' '}
+                {state === "Sign Up"
+                  ? "Already have an account?"
+                  : "Don't have an account?"}{" "}
                 <button
                   type="button"
                   onClick={() => {
-                    setState(state === 'Sign Up' ? 'Login' : 'Sign Up');
-                    setName('');
-                    setEmail('');
-                    setPassword('');
+                    setState(state === "Sign Up" ? "Login" : "Sign Up");
+                    setName("");
+                    setEmail("");
+                    setPassword("");
                   }}
                   className="font-medium text-primary underline cursor-pointer"
                 >
-                  {state === 'Sign Up' ? 'Sign in' : 'Sign up'}
+                  {state === "Sign Up" ? "Sign in" : "Sign up"}
                 </button>
               </p>
             </div>

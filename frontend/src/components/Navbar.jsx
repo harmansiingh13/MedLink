@@ -1,28 +1,36 @@
-import { useContext, useState } from 'react';
-import { assets } from '../assets/assets';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { AppContext } from '../context/AppContext';
-import { useToast } from '../context/ToastContext';
-import UserDropdown from './UserDropdown';
-import { Menu, X } from '@/components/icons';
+import { useState } from "react";
+import { assets } from "../assets/assets";
+import { NavLink, useNavigate } from "react-router-dom";
+import UserDropdown from "./UserDropdown";
+import { Menu, X } from "@/components/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { showToast } from "../store/toastSlice";
+import { setToken } from "../store/appSlice";
+import { useUserProfile } from "../utils/hooks/useMyProfile";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { showToast } = useToast();
+  const dispatch = useDispatch();
 
   const [showMenu, setShowMenu] = useState(false);
-  const { token, setToken, userData } = useContext(AppContext);
+  const token = useSelector((state) => state.app.token);
+  const { data: userData } = useUserProfile(!!token);
 
   const logout = () => {
-    setToken(false);
-    localStorage.removeItem('token');
-    navigate('/');
-    showToast('Logout successfully', 'success');
+    dispatch(setToken(false));
+    localStorage.removeItem("token");
+    navigate("/");
+    dispatch(showToast({ message: "Logout successfully", type: "success" }));
   };
 
   return (
     <div className="flex items-center justify-between text-sm py-4 mb-5 border-b border-b-gray-400">
-      <img onClick={() => navigate('/')} className="w-30 cursor-pointer" src={assets.logo} alt="" />
+      <img
+        onClick={() => navigate("/")}
+        className="w-30 cursor-pointer"
+        src={assets.logo}
+        alt=""
+      />
       <ul className="hidden md:flex items-start gap-5 font-medium">
         <NavLink to="/">
           <li className="py-1">HOME</li>
@@ -49,32 +57,25 @@ const Navbar = () => {
           <UserDropdown
             avatarSrc={userData.image}
             options={[
-              { label: 'My Profile', path: '/my-profile' },
-              { label: 'My Appointments', path: '/my-appointments' },
-              { label: 'Logout', onClick: logout },
+              { label: "My Profile", path: "/my-profile" },
+              { label: "My Appointments", path: "/my-appointments" },
+              { label: "Logout", onClick: logout },
             ]}
           />
         ) : (
           <button
-            onClick={() => navigate('/login')}
+            onClick={() => navigate("/login")}
             className="bg-primary cursor-pointer text-white px-8 py-3 rounded-full font-light hidden md:block"
           >
             Create Account
           </button>
         )}
 
-        {/* <img
-          onClick={() => setShowMenu(true)}
-          className="w-6 md:hidden"
-          src={assets.menu_icon}
-          alt=""
-        /> */}
-
         <Menu onClick={() => setShowMenu(true)} className="w-6 h-6 md:hidden" />
 
         <div
           className={`${
-            showMenu ? 'fixed w-full' : 'h-0 w-0'
+            showMenu ? "fixed w-full" : "h-0 w-0"
           } md:hidden right-0 top-0 bottom-0 z-20 overflow-hidden bg-white transition-all`}
         >
           <div className="flex items-center justify-between px-5 py-6">

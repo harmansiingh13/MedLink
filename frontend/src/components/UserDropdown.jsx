@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const UserDropdown = ({ options, avatarSrc }) => {
   const [open, setOpen] = useState(false);
@@ -21,8 +21,8 @@ const UserDropdown = ({ options, avatarSrc }) => {
         setOpen(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
@@ -33,7 +33,11 @@ const UserDropdown = ({ options, avatarSrc }) => {
         onClick={() => setOpen((prev) => !prev)}
         className="flex items-center p-0 rounded-full focus:outline-none cursor-pointer"
       >
-        <img src={avatarSrc} alt="User Avatar" className="w-10 h-10 rounded-full object-cover" />
+        <img
+          src={avatarSrc}
+          alt="User Avatar"
+          className="w-10 h-10 rounded-full object-cover"
+        />
       </button>
 
       {open && (

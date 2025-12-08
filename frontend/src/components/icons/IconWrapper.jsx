@@ -1,4 +1,4 @@
-export const IconWrapper = ({ className = '', children, ...rest }) => (
+export const IconWrapper = ({ className = "", children, ...rest }) => (
   <svg
     viewBox="0 0 24 24"
     fill="none"

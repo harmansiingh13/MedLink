@@ -1,7 +1,12 @@
-import { useState, useRef, useEffect } from 'react';
-import { ChevronDown } from '@/components/icons';
+import { useState, useRef, useEffect } from "react";
+import { ChevronDown } from "@/components/icons";
 
-const Dropdown = ({ options, placeholder = 'Select...', onSelect, className = '' }) => {
+const Dropdown = ({
+  options,
+  placeholder = "Select...",
+  onSelect,
+  className = "",
+}) => {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(null);
   const dropdownRef = useRef(null);
@@ -18,8 +23,8 @@ const Dropdown = ({ options, placeholder = 'Select...', onSelect, className = ''
         setOpen(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
@@ -32,7 +37,7 @@ const Dropdown = ({ options, placeholder = 'Select...', onSelect, className = ''
         <span>{selected || placeholder}</span>
         <ChevronDown
           className={`w-4 h-4 ml-2 transform transition-transform ${
-            open ? 'rotate-180' : 'rotate-0'
+            open ? "rotate-180" : "rotate-0"
           }`}
         />
       </button>
@@ -44,7 +49,7 @@ const Dropdown = ({ options, placeholder = 'Select...', onSelect, className = ''
               key={index}
               onClick={() => handleSelect(option)}
               className={`px-4 py-2 cursor-pointer hover:bg-indigo-50 border-b border-zinc-200 ${
-                selected === option ? 'bg-indigo-50 font-medium' : ''
+                selected === option ? "bg-indigo-50 font-medium" : ""
               }`}
             >
               {option}
