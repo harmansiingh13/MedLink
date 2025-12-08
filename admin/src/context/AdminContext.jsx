@@ -1,14 +1,15 @@
-import { createContext, useState } from 'react';
-import axios from 'axios';
-import { useToast } from './ToastContext';
-import { useLoader } from './LoaderContext';
+import { createContext, useState } from "react";
+import { useToast } from "./ToastContext";
+import { API_PATHS } from "../utils/ApiPaths";
+import axiosInstance from "../utils/AxiosInstance";
+import { Loader } from "../components/Loader";
 
 export const AdminContext = createContext();
 
 const AdminContextProvider = (props) => {
-  const { showLoader, hideLoader } = useLoader();
+  const [loader, setLoader] = useState(false);
   const [aToken, setAToken] = useState(
-    localStorage.getItem('aToken') ? localStorage.getItem('aToken') : '',
+    localStorage.getItem("aToken") ? localStorage.getItem("aToken") : ""
   );
   const [doctors, setDoctors] = useState([]);
   const [appointments, setAppointments] = useState([]);
@@ -18,105 +19,101 @@ const AdminContextProvider = (props) => {
 
   const getAllDoctors = async () => {
     try {
-      showLoader();
-      const { data } = await axios.post(
-        backendUrl + '/api/admin/all-doctors',
-        {},
-        { headers: { aToken } },
+      setLoader(true);
+      const { data } = await axiosInstance.post(
+        API_PATHS.ADMIN.GET_ALL_DOCTORS
       );
       if (data.success) {
         setDoctors(data.doctors);
         console.log(data.doctors);
       } else {
-        showToast(data.message, 'error');
+        showToast(data.message, "error");
       }
     } catch (error) {
-      showToast(error.message, 'error');
+      showToast(error.message, "error");
     } finally {
-      hideLoader();
+      setLoader(false);
     }
   };
 
   const changeAvailability = async (docId) => {
     try {
-      showLoader();
-      const { data } = await axios.post(
-        backendUrl + '/api/admin/change-availability',
-        { docId },
-        { headers: { aToken } },
+      setLoader(true);
+      const { data } = await axiosInstance.post(
+        API_PATHS.ADMIN.CHANGE_AVAILABILITY,
+        {
+          docId,
+        }
       );
       if (data.success) {
-        showToast(data.message, 'success');
+        showToast(data.message, "success");
         getAllDoctors();
       } else {
-        showToast(data.message, 'error');
+        showToast(data.message, "error");
       }
     } catch (error) {
-      showToast(error.message, 'error');
+      showToast(error.message, "error");
     } finally {
-      hideLoader();
+      setLoader(false);
     }
   };
 
   const getAllAppointments = async () => {
     try {
-      showLoader();
-      const { data } = await axios.get(backendUrl + '/api/admin/appointments', {
-        headers: { aToken },
-      });
+      setLoader(true);
+      const { data } = await axiosInstance.get(
+        API_PATHS.ADMIN.GET_ALL_APPOINTMENTS
+      );
       if (data.success) {
         setAppointments(data.appointments);
         console.log(data.appointments);
       } else {
-        showToast(data.message, 'error');
+        showToast(data.message, "error");
       }
     } catch (error) {
-      showToast(error.message, 'error');
+      showToast(error.message, "error");
     } finally {
-      hideLoader();
+      setLoader(false);
     }
   };
 
   const cancelAppointment = async (appointmentId) => {
     try {
-      showLoader();
-      const { data } = await axios.post(
-        backendUrl + '/api/admin/cancel-appointment',
-        { appointmentId },
-        { headers: { aToken } },
+      setLoader(true);
+      const { data } = await axiosInstance.post(
+        API_PATHS.ADMIN.CANCEL_APPOINTMENT,
+        { appointmentId }
       );
       if (data.success) {
-        showToast(data.message, 'success');
+        showToast(data.message, "success");
         getAllAppointments();
         getDashData();
       } else {
-        showToast(data.message, 'error');
+        showToast(data.message, "error");
       }
     } catch (error) {
-      showToast(error.message, 'error');
+      showToast(error.message, "error");
     } finally {
-      hideLoader();
+      setLoader(false);
     }
   };
 
   const getDashData = async () => {
     try {
-      showLoader();
+      setLoader(true);
 
-      const { data } = await axios.get(backendUrl + '/api/admin/dashboard', {
-        headers: { aToken },
-      });
+      const { data } = await axiosInstance.get(API_PATHS.ADMIN.GET_DASHBOARD);
 
       if (data.success) {
         setDashData(data.dashData);
         console.log(data.dashData);
       } else {
-        showToast(data.message, 'error');
+        showToast(data.message, "error");
       }
     } catch (error) {
-      showToast(error.message, 'error');
+      showToast(error.message, "error");
     } finally {
-      hideLoader();
+      setLoader(false);
     }
   };
 
@@ -134,7 +131,11 @@ const AdminContextProvider = (props) => {
     getDashData,
     dashData,
   };
-  return <AdminContext.Provider value={value}>{props.children}</AdminContext.Provider>;
+  return (
+    <AdminContext.Provider value={value}>
+      {props.children} {loader && <Loader />}
+    </AdminContext.Provider>
+  );
 };
 
 export default AdminContextProvider;

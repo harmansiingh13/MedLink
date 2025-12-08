@@ -1,11 +1,12 @@
-import { useContext } from 'react';
-import { AdminContext } from '../../context/AdminContext';
-import { useEffect } from 'react';
-import { AppContext } from '../../context/AppContext';
-import { X } from '@/components/icons';
+import { useContext } from "react";
+import { AdminContext } from "../../context/AdminContext";
+import { useEffect } from "react";
+import { AppContext } from "../../context/AppContext";
+import { X } from "@/components/icons";
 
 const AllApointments = () => {
-  const { aToken, appointments, getAllAppointments, cancelAppointment } = useContext(AdminContext);
+  const { aToken, appointments, getAllAppointments, cancelAppointment } =
+    useContext(AdminContext);
   const { calculateAge, slotDateFormat, currency } = useContext(AppContext);
 
   useEffect(() => {
@@ -24,7 +25,9 @@ const AllApointments = () => {
               <th className="py-3 px-6 text-left font-medium">#</th>
               <th className="py-3 px-6 text-left font-medium">Patient</th>
               <th className="py-3 px-6 text-left font-medium">Age</th>
-              <th className="py-3 px-6 text-left font-medium">Date &amp; Time</th>
+              <th className="py-3 px-6 text-left font-medium">
+                Date &amp; Time
+              </th>
               <th className="py-3 px-6 text-left font-medium">Doctor</th>
               <th className="py-3 px-6 text-left font-medium">Fees</th>
               <th className="py-3 px-6 text-center font-medium">Action</th>

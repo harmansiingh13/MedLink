@@ -1,11 +1,12 @@
-import { useContext, useEffect } from 'react';
-import { AdminContext } from '../../context/AdminContext';
-import { assets } from '../../assets/assets';
-import { AppContext } from '../../context/AppContext';
-import { Briefcase, X } from '@/components/icons';
+import { useContext, useEffect } from "react";
+import { AdminContext } from "../../context/AdminContext";
+import { assets } from "../../assets/assets";
+import { AppContext } from "../../context/AppContext";
+import { Briefcase, X } from "@/components/icons";
 
 const Dashboard = () => {
-  const { aToken, getDashData, cancelAppointment, dashData } = useContext(AdminContext);
+  const { aToken, getDashData, cancelAppointment, dashData } =
+    useContext(AdminContext);
   const { slotDateFormat } = useContext(AppContext);
 
   useEffect(() => {
@@ -21,15 +22,23 @@ const Dashboard = () => {
           <div className="flex items-center gap-3 bg-white p-4 min-w-52 rounded-xl border border-gray-200 shadow-lg cursor-pointer hover:scale-105 transition-transform">
             <img src={assets.doctor_icon} alt="Doctors" className="w-14" />
             <div>
-              <p className="text-xl font-semibold text-gray-600">{dashData.doctors}</p>
+              <p className="text-xl font-semibold text-gray-600">
+                {dashData.doctors}
+              </p>
               <p className="text-gray-400">Doctors</p>
             </div>
           </div>
 
           <div className="flex items-center gap-3 bg-white p-4 min-w-52 rounded-xl border border-gray-200 shadow-lg cursor-pointer hover:scale-105 transition-transform">
-            <img src={assets.appointments_icon} alt="Appointments" className="w-14" />
+            <img
+              src={assets.appointments_icon}
+              alt="Appointments"
+              className="w-14"
+            />
             <div>
-              <p className="text-xl font-semibold text-gray-600">{dashData.appointments}</p>
+              <p className="text-xl font-semibold text-gray-600">
+                {dashData.appointments}
+              </p>
               <p className="text-gray-400">Appointments</p>
             </div>
           </div>
@@ -37,7 +46,9 @@ const Dashboard = () => {
           <div className="flex items-center gap-3 bg-white p-4 min-w-52 rounded-xl border border-gray-200 shadow-lg cursor-pointer hover:scale-105 transition-transform">
             <img src={assets.patients_icon} alt="Patients" className="w-14" />
             <div>
-              <p className="text-xl font-semibold text-gray-600">{dashData.patients}</p>
+              <p className="text-xl font-semibold text-gray-600">
+                {dashData.patients}
+              </p>
               <p className="text-gray-400">Patients</p>
             </div>
           </div>
@@ -63,10 +74,14 @@ const Dashboard = () => {
                         alt={item.docData.name}
                         className="rounded-full w-10 h-10"
                       />
-                      <span className="font-medium text-gray-800">{item.docData.name}</span>
+                      <span className="font-medium text-gray-800">
+                        {item.docData.name}
+                      </span>
                     </td>
 
-                    <td className="px-6 py-4 text-gray-600">{slotDateFormat(item.slotDate)}</td>
+                    <td className="px-6 py-4 text-gray-600">
+                      {slotDateFormat(item.slotDate)}
+                    </td>
 
                     <td className="px-6 py-4 text-center">
                       {item.cancelled ? (

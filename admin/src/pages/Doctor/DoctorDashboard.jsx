@@ -1,13 +1,18 @@
-import { DoctorContext } from '../../context/DoctorContext';
-import { useEffect } from 'react';
-import { useContext } from 'react';
-import { assets } from '../../assets/assets';
-import { AppContext } from '../../context/AppContext';
-import { Briefcase, Check, X } from '@/components/icons';
+import { DoctorContext } from "../../context/DoctorContext";
+import { useEffect } from "react";
+import { useContext } from "react";
+import { assets } from "../../assets/assets";
+import { AppContext } from "../../context/AppContext";
+import { Briefcase, Check, X } from "@/components/icons";
 
 const DoctorDashboard = () => {
-  const { getDashData, setDashData, dashData, dToken, cancelAppointment, completeAppointment } =
-    useContext(DoctorContext);
+  const {
+    getDashData,
+    dashData,
+    dToken,
+    cancelAppointment,
+    completeAppointment,
+  } = useContext(DoctorContext);
   const { currency, slotDateFormat } = useContext(AppContext);
 
   useEffect(() => {
@@ -34,7 +39,9 @@ const DoctorDashboard = () => {
           <div className="flex items-center gap-2 bg-white p-4 min-w-52 rounded-xl border border-gray-200 shadow-lg cursor-pointer hover:scale-105 transition-all">
             <img src={assets.appointments_icon} alt="" className="w-14" />
             <div>
-              <p className="text-xl font-semibold text-gray-600">{dashData.appointments}</p>
+              <p className="text-xl font-semibold text-gray-600">
+                {dashData.appointments}
+              </p>
               <p className="text-gray-400">Appointments</p>
             </div>
           </div>
@@ -42,7 +49,9 @@ const DoctorDashboard = () => {
           <div className="flex items-center gap-2 bg-white p-4 min-w-52 rounded-xl border border-gray-200 shadow-lg cursor-pointer hover:scale-105 transition-all">
             <img src={assets.patients_icon} alt="" className="w-14" />
             <div>
-              <p className="text-xl font-semibold text-gray-600">{dashData.patients}</p>
+              <p className="text-xl font-semibold text-gray-600">
+                {dashData.patients}
+              </p>
               <p className="text-gray-400">Patients</p>
             </div>
           </div>
@@ -58,7 +67,10 @@ const DoctorDashboard = () => {
             <table className="min-w-full text-sm text-gray-600">
               <tbody className="divide-y divide-gray-100">
                 {dashData.latestAppointments.map((item, index) => (
-                  <tr key={index} className="hover:bg-gray-50 transition-colors">
+                  <tr
+                    key={index}
+                    className="hover:bg-gray-50 transition-colors"
+                  >
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         <img
@@ -66,11 +78,15 @@ const DoctorDashboard = () => {
                           alt={item.userData.name}
                           className="w-9 h-9 rounded-full object-cover"
                         />
-                        <p className="font-medium text-gray-800">{item.userData.name}</p>
+                        <p className="font-medium text-gray-800">
+                          {item.userData.name}
+                        </p>
                       </div>
                     </td>
 
-                    <td className="px-6 py-4">{slotDateFormat(item.slotDate)}</td>
+                    <td className="px-6 py-4">
+                      {slotDateFormat(item.slotDate)}
+                    </td>
 
                     <td className="px-6 py-4 text-center">
                       {item.cancelled ? (

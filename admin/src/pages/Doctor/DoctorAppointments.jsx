@@ -1,12 +1,17 @@
-import { useContext } from 'react';
-import { DoctorContext } from '../../context/DoctorContext';
-import { useEffect } from 'react';
-import { AppContext } from '../../context/AppContext';
-import { Check, X } from '@/components/icons';
+import { useContext } from "react";
+import { DoctorContext } from "../../context/DoctorContext";
+import { useEffect } from "react";
+import { AppContext } from "../../context/AppContext";
+import { Check, X } from "@/components/icons";
 
 const DoctorAppointments = () => {
-  const { dToken, appointments, getAppointments, completeAppointment, cancelAppointment } =
-    useContext(DoctorContext);
+  const {
+    dToken,
+    appointments,
+    getAppointments,
+    completeAppointment,
+    cancelAppointment,
+  } = useContext(DoctorContext);
   const { calculateAge, slotDateFormat, currency } = useContext(AppContext);
 
   useEffect(() => {
@@ -26,7 +31,9 @@ const DoctorAppointments = () => {
               <th className="py-3 px-6 text-left font-medium">Patient</th>
               <th className="py-3 px-6 text-left font-medium">Payment</th>
               <th className="py-3 px-6 text-left font-medium">Age</th>
-              <th className="py-3 px-6 text-left font-medium">Date &amp; Time</th>
+              <th className="py-3 px-6 text-left font-medium">
+                Date &amp; Time
+              </th>
               <th className="py-3 px-6 text-left font-medium">Fees</th>
               <th className="py-3 px-6 text-center font-medium">Action</th>
             </tr>
@@ -58,15 +65,17 @@ const DoctorAppointments = () => {
                     <span
                       className={`text-xs inline border px-2 py-0.5 rounded-full ${
                         item.payment
-                          ? 'border-green-500 text-green-600 bg-green-50'
-                          : 'border-yellow-500 text-yellow-600 bg-yellow-50'
+                          ? "border-green-500 text-green-600 bg-green-50"
+                          : "border-yellow-500 text-yellow-600 bg-yellow-50"
                       }`}
                     >
-                      {item.payment ? 'ONLINE' : 'CASH'}
+                      {item.payment ? "ONLINE" : "CASH"}
                     </span>
                   </td>
 
-                  <td className="py-3 px-6">{calculateAge(item.userData.dob)}</td>
+                  <td className="py-3 px-6">
+                    {calculateAge(item.userData.dob)}
+                  </td>
 
                   <td className="py-3 px-6">
                     {slotDateFormat(item.slotDate)}, {item.slotTime}

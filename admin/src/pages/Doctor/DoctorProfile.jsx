@@ -1,13 +1,14 @@
-import { useContext } from 'react';
-import { DoctorContext } from '../../context/DoctorContext';
-import { AppContext } from '../../context/AppContext';
-import { useEffect } from 'react';
-import { useState } from 'react';
-import axios from 'axios';
-import { useToast } from '../../context/ToastContext';
+import { useContext } from "react";
+import { DoctorContext } from "../../context/DoctorContext";
+import { AppContext } from "../../context/AppContext";
+import { useEffect } from "react";
+import { useState } from "react";
+import { useToast } from "../../context/ToastContext";
+import { API_PATHS } from "../../utils/ApiPaths";
+import axiosInstance from "../../utils/AxiosInstance";
 
 const DoctorProfile = () => {
-  const { dToken, profileData, setProfileData, getProfileData, backendUrl } =
+  const { dToken, profileData, setProfileData, getProfileData } =
     useContext(DoctorContext);
   const { currency } = useContext(AppContext);
   const [isEdit, setIsEdit] = useState(false);
@@ -21,19 +22,20 @@ const DoctorProfile = () => {
         available: profileData.available,
       };
 
-      const { data } = await axios.post(backendUrl + '/api/doctor/update-profile', updateData, {
-        headers: { dToken },
-      });
+      const { data } = await axiosInstance.post(
+        API_PATHS.DOCTOR.UPDATE_DOCTOR_PROFILE,
+        updateData
+      );
 
       if (data.success) {
-        showToast(data.message, 'success');
+        showToast(data.message, "success");
         setIsEdit(false);
         getProfileData();
       } else {
-        showToast(data.message, 'error');
+        showToast(data.message, "error");
       }
     } catch (error) {
-      showToast(error.message, 'error');
+      showToast(error.message, "error");
     }
   };
 
@@ -71,7 +73,9 @@ const DoctorProfile = () => {
                   <div className="mb-6">
                     <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
                       {profileData.name}
-                      <span className="text-lg font-normal text-gray-500">•</span>
+                      <span className="text-lg font-normal text-gray-500">
+                        •
+                      </span>
                       <span className="text-lg font-semibold text-primary">
                         {profileData.speciality}
                       </span>
@@ -87,8 +91,12 @@ const DoctorProfile = () => {
                   </div>
 
                   <div className="mb-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">About</h3>
-                    <p className="text-gray-600 leading-relaxed">{profileData.about}</p>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      About
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      {profileData.about}
+                    </p>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -105,7 +113,10 @@ const DoctorProfile = () => {
                           <input
                             value={profileData.fees}
                             onChange={(e) =>
-                              setProfileData((prev) => ({ ...prev, fees: e.target.value }))
+                              setProfileData((prev) => ({
+                                ...prev,
+                                fees: e.target.value,
+                              }))
                             }
                             type="number"
                             className="pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-0 w-full"
@@ -127,16 +138,25 @@ const DoctorProfile = () => {
                         <button
                           onClick={() =>
                             isEdit &&
-                            setProfileData((prev) => ({ ...prev, available: !prev.available }))
+                            setProfileData((prev) => ({
+                              ...prev,
+                              available: !prev.available,
+                            }))
                           }
                           className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-0 ${
-                            profileData.available ? 'bg-primary' : 'bg-gray-300'
-                          } ${isEdit ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'}`}
+                            profileData.available ? "bg-primary" : "bg-gray-300"
+                          } ${
+                            isEdit
+                              ? "cursor-pointer"
+                              : "cursor-not-allowed opacity-50"
+                          }`}
                           disabled={!isEdit}
                         >
                           <span
                             className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                              profileData.available ? 'translate-x-6' : 'translate-x-1'
+                              profileData.available
+                                ? "translate-x-6"
+                                : "translate-x-1"
                             }`}
                           />
                         </button>
@@ -144,18 +164,20 @@ const DoctorProfile = () => {
                         <div
                           className={`inline-flex items-center px-2 py-0.5 rounded-full text-sm font-medium ${
                             profileData.available
-                              ? 'bg-green-100 text-green-800 border border-green-200'
-                              : 'bg-red-100 text-red-800 border border-red-200'
+                              ? "bg-green-100 text-green-800 border border-green-200"
+                              : "bg-red-100 text-red-800 border border-red-200"
                           }`}
                         >
-                          {profileData.available ? 'Available' : 'Unavailable'}
+                          {profileData.available ? "Available" : "Unavailable"}
                         </div>
                       </div>
                     </div>
                   </div>
 
                   <div className="mb-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Clinic Address</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Clinic Address
+                    </h3>
                     {isEdit ? (
                       <div className="space-y-3">
                         <input
@@ -163,7 +185,10 @@ const DoctorProfile = () => {
                           onChange={(e) =>
                             setProfileData((prev) => ({
                               ...prev,
-                              address: { ...prev.address, line1: e.target.value },
+                              address: {
+                                ...prev.address,
+                                line1: e.target.value,
+                              },
                             }))
                           }
                           type="text"
@@ -175,7 +200,10 @@ const DoctorProfile = () => {
                           onChange={(e) =>
                             setProfileData((prev) => ({
                               ...prev,
-                              address: { ...prev.address, line2: e.target.value },
+                              address: {
+                                ...prev.address,
+                                line2: e.target.value,
+                              },
                             }))
                           }
                           type="text"

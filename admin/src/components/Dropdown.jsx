@@ -1,6 +1,11 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from "react";
 
-const Dropdown = ({ options, placeholder = 'Select...', onSelect, className = '' }) => {
+const Dropdown = ({
+  options,
+  placeholder = "Select...",
+  onSelect,
+  className = "",
+}) => {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(null);
   const dropdownRef = useRef(null);
@@ -17,8 +22,8 @@ const Dropdown = ({ options, placeholder = 'Select...', onSelect, className = ''
         setOpen(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
@@ -31,14 +36,18 @@ const Dropdown = ({ options, placeholder = 'Select...', onSelect, className = ''
         <span>{selected || placeholder}</span>
         <svg
           className={`w-4 h-4 ml-2 transform transition-transform ${
-            open ? 'rotate-180' : 'rotate-0'
+            open ? "rotate-180" : "rotate-0"
           }`}
           fill="none"
           stroke="currentColor"
           strokeWidth={2}
           viewBox="0 0 24 24"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M19 9l-7 7-7-7"
+          />
         </svg>
       </button>
 
@@ -49,7 +58,7 @@ const Dropdown = ({ options, placeholder = 'Select...', onSelect, className = ''
               key={index}
               onClick={() => handleSelect(option)}
               className={`px-4 py-2 cursor-pointer hover:bg-indigo-50 border-b border-zinc-200 ${
-                selected === option ? 'bg-indigo-50 font-medium' : ''
+                selected === option ? "bg-indigo-50 font-medium" : ""
               }`}
             >
               {option}

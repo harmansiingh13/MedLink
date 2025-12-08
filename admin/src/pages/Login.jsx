@@ -1,70 +1,81 @@
-import { useContext, useState } from 'react';
-import { AdminContext } from '../context/AdminContext';
-import axios from 'axios';
-import { useToast } from '../context/ToastContext';
-import { useLoader } from '../context/LoaderContext';
-import { DoctorContext } from '../context/DoctorContext';
-import { Briefcase, ShieldUser } from '@/components/icons';
-import { useNavigate } from 'react-router-dom';
+import { useContext, useState } from "react";
+import { AdminContext } from "../context/AdminContext";
+import { useToast } from "../context/ToastContext";
+import { DoctorContext } from "../context/DoctorContext";
+import { Briefcase, ShieldUser } from "@/components/icons";
+import { useNavigate } from "react-router-dom";
+import { API_PATHS } from "../utils/ApiPaths";
+import axiosInstance from "../utils/AxiosInstance";
+import { Loader } from "../components/Loader";
 
 const Login = () => {
-  const { showLoader, hideLoader } = useLoader();
-  const [state, setState] = useState('Admin');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [loader, setLoader] = useState(false);
+  const [state, setState] = useState("Admin");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const { showToast } = useToast();
-  const { setAToken, backendUrl } = useContext(AdminContext);
+  const { setAToken } = useContext(AdminContext);
   const { setDToken } = useContext(DoctorContext);
 
   const navigate = useNavigate();
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    console.log('clicked!');
+    console.log("clicked!");
     try {
-      showLoader();
-      if (state === 'Admin') {
-        const { data } = await axios.post(backendUrl + '/api/admin/login', { email, password });
+      setLoader(true);
+      if (state === "Admin") {
+        const { data } = await axiosInstance.post(API_PATHS.ADMIN.LOGIN, {
+          email,
+          password,
+        });
         if (data.success) {
-          navigate('/admin-dashboard');
-          localStorage.setItem('aToken', data.token);
+          navigate("/admin-dashboard");
+          localStorage.setItem("aToken", data.token);
           setAToken(data.token);
-          showToast('Admin login successful', 'success');
+          showToast("Admin login successful", "success");
         } else {
-          showToast(data.message, 'error');
+          showToast(data.message, "error");
         }
       } else {
-        const { data } = await axios.post(backendUrl + '/api/doctor/login', { email, password });
+        const { data } = await axiosInstance.post(API_PATHS.DOCTOR.LOGIN, {
+          email,
+          password,
+        });
         if (data.success) {
-          navigate('/doctor-dashboard');
-          localStorage.setItem('dToken', data.token);
+          navigate("/doctor-dashboard");
+          localStorage.setItem("dToken", data.token);
           setDToken(data.token);
-          showToast('Doctor login successful', 'success');
+          showToast("Doctor login successful", "success");
         } else {
-          showToast(data.message, 'error');
+          showToast(data.message, "error");
         }
       }
     } catch (error) {
-      showToast(error.message, 'error');
-      console.error('Form submit error:', error);
+      showToast(error.message, "error");
+      console.error("Form submit error:", error);
     } finally {
-      hideLoader();
+      setLoader(false);
     }
   };
 
   const switchMode = (newMode) => {
     setState(newMode);
-    setEmail('');
-    setPassword('');
+    setEmail("");
+    setPassword("");
   };
+
+  if (loader) return <Loader />;
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4"></div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">{state} Portal</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            {state} Portal
+          </h1>
         </div>
 
         {/* Login Card */}
@@ -72,11 +83,11 @@ const Login = () => {
           {/* Mode Toggle */}
           <div className="flex border-b border-gray-200">
             <button
-              onClick={() => switchMode('Admin')}
+              onClick={() => switchMode("Admin")}
               className={`flex-1 py-4 px-6 text-sm font-medium transition-all duration-200 cursor-pointer ${
-                state === 'Admin'
-                  ? 'bg-blue-50 text-primary border-b-2 border-primary'
-                  : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                state === "Admin"
+                  ? "bg-blue-50 text-primary border-b-2 border-primary"
+                  : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
               }`}
             >
               <div className="flex items-center justify-center gap-2">
@@ -85,11 +96,11 @@ const Login = () => {
               </div>
             </button>
             <button
-              onClick={() => switchMode('Doctor')}
+              onClick={() => switchMode("Doctor")}
               className={`flex-1 py-4 px-6 text-sm font-medium transition-all duration-200 cursor-pointer ${
-                state === 'Doctor'
-                  ? 'bg-blue-50 text-primary border-b-2 border-primary'
-                  : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                state === "Doctor"
+                  ? "bg-blue-50 text-primary border-b-2 border-primary"
+                  : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
               }`}
             >
               <div className="flex items-center justify-center gap-2">
@@ -104,7 +115,10 @@ const Login = () => {
             <div className="space-y-6">
               {/* Email Field */}
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Email Address
                 </label>
                 <input
@@ -120,7 +134,10 @@ const Login = () => {
 
               {/* Password Field */}
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Password
                 </label>
                 <input

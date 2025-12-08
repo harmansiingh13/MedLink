@@ -1,101 +1,106 @@
-import { useContext, useState } from 'react';
-import { assets } from '../../assets/assets';
-import { AdminContext } from '../../context/AdminContext';
-import { useToast } from '../../context/ToastContext';
-import axios from 'axios';
-import { useLoader } from '../../context/LoaderContext';
-import Dropdown from '../../components/Dropdown';
-import { Upload } from '@/components/icons';
+import { useState } from "react";
+import { assets } from "../../assets/assets";
+import { useToast } from "../../context/ToastContext";
+import Dropdown from "../../components/Dropdown";
+import { Upload } from "@/components/icons";
+import { API_PATHS } from "../../utils/ApiPaths";
+import axiosInstance from "../../utils/AxiosInstance";
+import { Loader } from "../../components/Loader";
 
 const AddDoctor = () => {
-  const { showLoader, hideLoader } = useLoader();
+  const [loader, setLoader] = useState(false);
   const [docImg, setDocImg] = useState(false);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [experience, setExperience] = useState('1');
-  const [fees, setFees] = useState('');
-  const [about, setAbout] = useState('');
-  const [speciality, setSpeciality] = useState('General physician');
-  const [degree, setDegree] = useState('');
-  const [address1, setAddress1] = useState('');
-  const [address2, setAddress2] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [experience, setExperience] = useState("1");
+  const [fees, setFees] = useState("");
+  const [about, setAbout] = useState("");
+  const [speciality, setSpeciality] = useState("General physician");
+  const [degree, setDegree] = useState("");
+  const [address1, setAddress1] = useState("");
+  const [address2, setAddress2] = useState("");
 
-  const { backendUrl, aToken } = useContext(AdminContext);
   const { showToast } = useToast();
   const experienceOptions = [
-    '1 Year',
-    '2 Year',
-    '3 Year',
-    '4 Year',
-    '5 Year',
-    '6 Year',
-    '7 Year',
-    '8 Year',
-    '9 Year',
-    '10 Year',
+    "1 Year",
+    "2 Year",
+    "3 Year",
+    "4 Year",
+    "5 Year",
+    "6 Year",
+    "7 Year",
+    "8 Year",
+    "9 Year",
+    "10 Year",
   ];
 
   const specialityOptions = [
-    'General physician',
-    'Gynecologist',
-    'Dermatologist',
-    'Pediatricians',
-    'Neurologist',
-    'Gastroenterologist',
+    "General physician",
+    "Gynecologist",
+    "Dermatologist",
+    "Pediatricians",
+    "Neurologist",
+    "Gastroenterologist",
   ];
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     try {
-      showLoader();
+      setLoader(true);
       if (!docImg) {
-        showToast('Image not selected', 'error');
+        showToast("Image not selected", "error");
         return;
       }
       const formData = new FormData();
-      formData.append('image', docImg);
-      formData.append('name', name);
-      formData.append('email', email);
-      formData.append('password', password);
-      formData.append('experience', experience);
-      formData.append('fees', Number(fees));
-      formData.append('about', about);
-      formData.append('speciality', speciality);
-      formData.append('degree', degree);
-      formData.append('address', JSON.stringify({ line1: address1, line2: address2 }));
+      formData.append("image", docImg);
+      formData.append("name", name);
+      formData.append("email", email);
+      formData.append("password", password);
+      formData.append("experience", experience);
+      formData.append("fees", Number(fees));
+      formData.append("about", about);
+      formData.append("speciality", speciality);
+      formData.append("degree", degree);
+      formData.append(
+        "address",
+        JSON.stringify({ line1: address1, line2: address2 })
+      );
 
       formData.forEach((value, key) => {
         console.log(`${key} : ${value}`);
       });
 
-      const { data } = await axios.post(backendUrl + '/api/admin/add-doctor', formData, {
-        headers: { aToken },
-      });
+      const { data } = await axiosInstance.post(
+        API_PATHS.ADMIN.ADD_DOCTOR,
+        formData
+      );
 
       if (data.success) {
-        showToast(data.message, 'success');
+        showToast(data.message, "success");
         setDocImg(false);
-        setName('');
-        setPassword('');
-        setEmail('');
-        setAddress1('');
-        setAddress2('');
-        setDegree('');
-        setAbout('');
+        setName("");
+        setPassword("");
+        setEmail("");
+        setAddress1("");
+        setAddress2("");
+        setDegree("");
+        setAbout("");
         setExperience(1);
-        setSpeciality('General physician');
-        setFees('');
+        setSpeciality("General physician");
+        setFees("");
       } else {
-        showToast(data.message, 'error');
+        showToast(data.message, "error");
       }
     } catch (error) {
-      showToast(error.message, 'error');
-      console.error('Form submit error:', error);
+      showToast(error.message, "error");
+      console.error("Form submit error:", error);
     } finally {
-      hideLoader();
+      setLoader(false);
     }
   };
+
+  if (loader) return <Loader />;
 
   return (
     <form onSubmit={onSubmitHandler} className="m-5 w-full">
@@ -115,7 +120,12 @@ const AddDoctor = () => {
             </div>
           </label>
 
-          <input type="file" id="doc-img" hidden onChange={(e) => setDocImg(e.target.files[0])} />
+          <input
+            type="file"
+            id="doc-img"
+            hidden
+            onChange={(e) => setDocImg(e.target.files[0])}
+          />
 
           <p>
             Upload doctor <br />
