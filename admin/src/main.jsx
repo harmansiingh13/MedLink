@@ -2,21 +2,20 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
-import AdminContextProvider from "./context/AdminContext.jsx";
-import DoctorContextProvider from "./context/DoctorContext.jsx";
-import AppContextProvider from "./context/AppContext.jsx";
-import { ToastContextProvider } from "./context/ToastContext.jsx";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Provider } from "react-redux";
+import { store } from "./store/store.js";
+import Toast from "./components/Toast.jsx";
+
+const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
-    <ToastContextProvider>
-      <AdminContextProvider>
-        <DoctorContextProvider>
-          <AppContextProvider>
-            <App />
-          </AppContextProvider>
-        </DoctorContextProvider>
-      </AdminContextProvider>
-    </ToastContextProvider>
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store}>
+        <Toast />
+        <App />
+      </Provider>
+    </QueryClientProvider>
   </BrowserRouter>
 );

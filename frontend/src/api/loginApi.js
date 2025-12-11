@@ -1,5 +1,5 @@
-import { API_PATHS } from "../ApiPaths";
-import axiosInstance from "../AxiosInstance";
+import axiosInstance from "../services/AxiosInstance";
+import { API_PATHS } from "../constants/ApiPaths";
 import { useMutation } from "@tanstack/react-query";
 
 export const useRegister = () => {

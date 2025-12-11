@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Loader } from "../components/Loader";
 import { showToast } from "../store/toastSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useRegister, useSignin } from "../utils/hooks/useLogin";
 import { setToken } from "../store/appSlice";
+import { useRegister, useSignin } from "../api/loginApi";
 
 const Login = () => {
   const navigate = useNavigate();

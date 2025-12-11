@@ -1,24 +1,26 @@
-import { useContext } from "react";
-import { DoctorContext } from "../../context/DoctorContext";
-import { useEffect } from "react";
-import { AppContext } from "../../context/AppContext";
 import { Check, X } from "@/components/icons";
+import {
+  useCancelDoctorAppointment,
+  useCompleteAppointment,
+  useDoctorAppointments,
+} from "../../api/doctorApi";
+import { Loader } from "../../components/Loader";
+import { calculateAge, slotDateFormat } from "../../constants/date";
+import { useSelector } from "react-redux";
 
 const DoctorAppointments = () => {
-  const {
-    dToken,
-    appointments,
-    getAppointments,
-    completeAppointment,
-    cancelAppointment,
-  } = useContext(DoctorContext);
-  const { calculateAge, slotDateFormat, currency } = useContext(AppContext);
+  const currency = useSelector((state) => state.app.currencySymbol);
+  const { data: appointments = [], isLoading } = useDoctorAppointments();
+  const completeAppointmentMutation = useCompleteAppointment();
+  const cancelAppointmentMutation = useCancelDoctorAppointment();
 
-  useEffect(() => {
-    if (dToken) {
-      getAppointments();
-    }
-  }, [dToken]);
+  if (
+    isLoading ||
+    completeAppointmentMutation.isPending ||
+    cancelAppointmentMutation.isPending
+  )
+    return <Loader />;
+    
   return (
     <div className="w-full max-w-6xl m-5">
       <p className="mb-3 text-lg font-medium">All Appointments</p>
@@ -98,14 +100,18 @@ const DoctorAppointments = () => {
                     ) : (
                       <div className="flex items-center justify-center gap-2">
                         <button
-                          onClick={() => cancelAppointment(item._id)}
+                          onClick={() =>
+                            cancelAppointmentMutation.mutate(item._id)
+                          }
                           className="w-8 h-8 inline-flex items-center justify-center text-gray-500 bg-white border border-gray-300 hover:bg-red-600 hover:text-white rounded-full p-1 cursor-pointer transition-all duration-200 shadow-sm"
                           title="Cancel appointment"
                         >
                           <X className="w-4 h-4" />
                         </button>
                         <button
-                          onClick={() => completeAppointment(item._id)}
+                          onClick={() =>
+                            completeAppointmentMutation.mutate(item._id)
+                          }
                           className="w-8 h-8 inline-flex items-center justify-center text-gray-500 bg-white border border-gray-300 hover:bg-green-600 hover:text-white rounded-full p-1 cursor-pointer transition-all duration-200 shadow-sm"
                           title="Cancel appointment"
                         >

@@ -1,24 +1,21 @@
-import { useContext } from "react";
 import { assets } from "../assets/assets";
-import { AdminContext } from "../context/AdminContext";
 import { useNavigate } from "react-router-dom";
-import { useToast } from "../context/ToastContext";
-import { DoctorContext } from "../context/DoctorContext";
 import { LogOut } from "@/components/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { clearAdminToken, clearDoctorToken } from "../store/appSlice";
+import { showToast } from "../store/toastSlice";
 
 const Navbar = () => {
-  const { aToken, setAToken } = useContext(AdminContext);
-  const { dToken, setDToken } = useContext(DoctorContext);
+  const { aToken, dToken } = useSelector((state) => state.app);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { showToast } = useToast();
 
   const logout = () => {
+    if (aToken) dispatch(clearAdminToken());
+    if (dToken) dispatch(clearDoctorToken());
+
     navigate("/");
-    aToken && setAToken("");
-    aToken && localStorage.removeItem("aToken");
-    dToken && setDToken("");
-    dToken && localStorage.removeItem("dToken");
-    showToast("Logout Successfully", "success");
+    dispatch(showToast({ message: "Logout Successfully", type: "success" }));
   };
 
   const userRole = aToken ? "Admin" : "Doctor";

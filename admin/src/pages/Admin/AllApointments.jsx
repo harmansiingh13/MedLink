@@ -1,19 +1,16 @@
-import { useContext } from "react";
-import { AdminContext } from "../../context/AdminContext";
-import { useEffect } from "react";
-import { AppContext } from "../../context/AppContext";
 import { X } from "@/components/icons";
+import { useAppointments, useCancelAppointment } from "../../api/adminApi";
+import { calculateAge, slotDateFormat } from "../../constants/date";
+import { useSelector } from "react-redux";
+import { Loader } from "../../components/Loader";
 
 const AllApointments = () => {
-  const { aToken, appointments, getAllAppointments, cancelAppointment } =
-    useContext(AdminContext);
-  const { calculateAge, slotDateFormat, currency } = useContext(AppContext);
+  const currency = useSelector((state) => state.app.currencySymbol);
+  const { data: appointments = [], isLoading } = useAppointments();
+  const cancelAppointmentMutation = useCancelAppointment();
+  
+  if (isLoading || cancelAppointmentMutation.isPending) return <Loader />;
 
-  useEffect(() => {
-    if (aToken) {
-      getAllAppointments();
-    }
-  }, [aToken]);
   return (
     <div className="w-full max-w-6xl m-5">
       <p className="mb-3 text-lg font-medium">App Appointments</p>
@@ -86,7 +83,7 @@ const AllApointments = () => {
                     </span>
                   ) : (
                     <button
-                      onClick={() => cancelAppointment(item._id)}
+                      onClick={() => cancelAppointmentMutation.mutate(item._id)}
                       className="w-8 h-8 inline-flex items-center justify-center text-gray-500 bg-white border border-gray-300 hover:bg-red-600 hover:text-white rounded-full p-1 cursor-pointer transition-all duration-200 shadow-sm"
                       title="Cancel appointment"
                     >

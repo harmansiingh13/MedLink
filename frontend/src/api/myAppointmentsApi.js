@@ -1,11 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { API_PATHS } from "../ApiPaths";
-import axiosInstance from "../AxiosInstance";
+import axiosInstance from "../services/AxiosInstance";
+import { API_PATHS } from "../constants/ApiPaths";
 
 export const useUserAppointments = (enabled) => {
   return useQuery({
     queryKey: ["user-appointments"],
-    enabled, // only fetch if token exists
+    enabled, 
     queryFn: async () => {
       const { data } = await axiosInstance.get(
         API_PATHS.APPOINTMENT.GET_USER_APPOINTMENT

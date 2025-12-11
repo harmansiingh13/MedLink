@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { API_PATHS } from "../ApiPaths";
-import axiosInstance from "../AxiosInstance";
+import axiosInstance from "../services/AxiosInstance";
+import { API_PATHS } from "../constants/ApiPaths";
 
 export const useUpdateProfile = () => {
   return useMutation({
@@ -17,7 +17,7 @@ export const useUpdateProfile = () => {
 export const useUserProfile = (enabled) => {
   return useQuery({
     queryKey: ["user-profile"],
-    enabled, // only run when token exists
+    enabled,
     queryFn: async () => {
       const { data } = await axiosInstance.get(API_PATHS.AUTH.GET_USER);
       if (!data.success) throw new Error(data.message);

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowRight } from "@/components/icons";
-import { useDoctors } from "../utils/hooks/useHome";
+import { useDoctors } from "../api/HomeApi";
 
 const TopDoctors = () => {
   const navigate = useNavigate();

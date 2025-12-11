@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { assets } from "../../assets/assets";
-import { useToast } from "../../context/ToastContext";
 import Dropdown from "../../components/Dropdown";
 import { Upload } from "@/components/icons";
-import { API_PATHS } from "../../utils/ApiPaths";
-import axiosInstance from "../../utils/AxiosInstance";
 import { Loader } from "../../components/Loader";
+import { useAddDoctor } from "../../api/adminApi";
+import { useDispatch } from "react-redux";
+import { showToast } from "../../store/toastSlice";
+import { useQueryClient } from "@tanstack/react-query";
 
 const AddDoctor = () => {
-  const [loader, setLoader] = useState(false);
   const [docImg, setDocImg] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -20,8 +20,10 @@ const AddDoctor = () => {
   const [degree, setDegree] = useState("");
   const [address1, setAddress1] = useState("");
   const [address2, setAddress2] = useState("");
+  const addDoctorMutation = useAddDoctor();
+  const dispatch = useDispatch();
+  const queryClient = useQueryClient();
 
-  const { showToast } = useToast();
   const experienceOptions = [
     "1 Year",
     "2 Year",
@@ -44,63 +46,58 @@ const AddDoctor = () => {
     "Gastroenterologist",
   ];
 
-  const onSubmitHandler = async (e) => {
-    e.preventDefault();
-    try {
-      setLoader(true);
-      if (!docImg) {
-        showToast("Image not selected", "error");
-        return;
-      }
-      const formData = new FormData();
-      formData.append("image", docImg);
-      formData.append("name", name);
-      formData.append("email", email);
-      formData.append("password", password);
-      formData.append("experience", experience);
-      formData.append("fees", Number(fees));
-      formData.append("about", about);
-      formData.append("speciality", speciality);
-      formData.append("degree", degree);
-      formData.append(
-        "address",
-        JSON.stringify({ line1: address1, line2: address2 })
-      );
-
-      formData.forEach((value, key) => {
-        console.log(`${key} : ${value}`);
-      });
-
-      const { data } = await axiosInstance.post(
-        API_PATHS.ADMIN.ADD_DOCTOR,
-        formData
-      );
-
-      if (data.success) {
-        showToast(data.message, "success");
-        setDocImg(false);
-        setName("");
-        setPassword("");
-        setEmail("");
-        setAddress1("");
-        setAddress2("");
-        setDegree("");
-        setAbout("");
-        setExperience(1);
-        setSpeciality("General physician");
-        setFees("");
-      } else {
-        showToast(data.message, "error");
-      }
-    } catch (error) {
-      showToast(error.message, "error");
-      console.error("Form submit error:", error);
-    } finally {
-      setLoader(false);
-    }
+  const resetForm = () => {
+    setDocImg(false);
+    setName("");
+    setPassword("");
+    setEmail("");
+    setAddress1("");
+    setAddress2("");
+    setDegree("");
+    setAbout("");
+    setExperience(1);
+    setSpeciality("General physician");
+    setFees("");
   };
 
-  if (loader) return <Loader />;
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+
+    if (!docImg) {
+      dispatch(showToast({ message: "Image not selected", type: "error" }));
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", docImg);
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("password", password);
+    formData.append("experience", experience);
+    formData.append("fees", Number(fees));
+    formData.append("about", about);
+    formData.append("speciality", speciality);
+    formData.append("degree", degree);
+    formData.append(
+      "address",
+      JSON.stringify({ line1: address1, line2: address2 })
+    );
+
+    addDoctorMutation.mutate(formData, {
+      onSuccess: (data) => {
+        dispatch(showToast({ message: data.message, type: "success" }));
+        queryClient.invalidateQueries({
+          queryKey: ["doctors"],
+        });
+        resetForm();
+      },
+      onError: (err) => {
+        dispatch(showToast({ message: err.message, type: "error" }));
+      },
+    });
+  };
+
+  if (addDoctorMutation.isPending) return <Loader />;
 
   return (
     <form onSubmit={onSubmitHandler} className="m-5 w-full">

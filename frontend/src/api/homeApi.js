@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import axiosInstance from "../AxiosInstance";
-import { API_PATHS } from "../ApiPaths";
+import axiosInstance from "../services/AxiosInstance";
+import { API_PATHS } from "../constants/ApiPaths";
 
 export const useDoctors = () => {
   return useQuery({
@@ -13,5 +13,3 @@ export const useDoctors = () => {
     staleTime: 1000 * 60 * 5, // 5 minutes cache
   });
 };
-
-

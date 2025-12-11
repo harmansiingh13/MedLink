@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useDoctors } from "../utils/hooks/useHome";
 import { Loader } from "../components/Loader";
+import { useDoctors } from "../api/HomeApi";
 
 const Doctors = () => {
   const navigate = useNavigate();

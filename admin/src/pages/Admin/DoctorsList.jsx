@@ -1,16 +1,12 @@
-import { AdminContext } from "../../context/AdminContext";
-import { useContext } from "react";
-import { useEffect } from "react";
+import { useChangeAvailability, useDoctors } from "../../api/adminApi";
+import { Loader } from "../../components/Loader";
 
 const DoctorsList = () => {
-  const { doctors, aToken, getAllDoctors, changeAvailability } =
-    useContext(AdminContext);
+  const { data: doctors = [], isLoading } = useDoctors();
+  const changeAvailabilityMutation = useChangeAvailability();
 
-  useEffect(() => {
-    if (aToken) {
-      getAllDoctors();
-    }
-  }, [aToken]);
+  if (isLoading || changeAvailabilityMutation.isPending) return <Loader />;
+
   return (
     <div className="m-5 max-h-[90vh] overflow-y-scroll">
       <h1 className="text-lg font-medium">All Doctors</h1>
@@ -32,7 +28,7 @@ const DoctorsList = () => {
               <p className="text-zinc-600 text-sm">{item.speciality}</p>
               <div className="mt-2 flex items-center gap-1 text-sm">
                 <input
-                  onChange={() => changeAvailability(item._id)}
+                  onChange={() => changeAvailabilityMutation.mutate(item._id)}
                   type="checkbox"
                   checked={item.available}
                 />

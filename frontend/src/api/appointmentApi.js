@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import { API_PATHS } from "../ApiPaths";
-import axiosInstance from "../AxiosInstance";
+import axiosInstance from "../services/AxiosInstance";
+import { API_PATHS } from "../constants/ApiPaths";
 
 export const useBookAppointment = () => {
   return useMutation({

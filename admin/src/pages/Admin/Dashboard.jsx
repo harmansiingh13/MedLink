@@ -1,19 +1,14 @@
-import { useContext, useEffect } from "react";
-import { AdminContext } from "../../context/AdminContext";
 import { assets } from "../../assets/assets";
-import { AppContext } from "../../context/AppContext";
 import { Briefcase, X } from "@/components/icons";
+import { useCancelAppointment, useDashboard } from "../../api/adminApi";
+import { slotDateFormat } from "../../constants/date";
+import { Loader } from "../../components/Loader";
 
 const Dashboard = () => {
-  const { aToken, getDashData, cancelAppointment, dashData } =
-    useContext(AdminContext);
-  const { slotDateFormat } = useContext(AppContext);
+  const { data: dashData, isLoading } = useDashboard();
+  const cancelAppointmentMutation = useCancelAppointment();
 
-  useEffect(() => {
-    if (aToken) {
-      getDashData();
-    }
-  }, [aToken]);
+  if (isLoading || cancelAppointmentMutation.isPending) return <Loader />;
 
   return (
     dashData && (
@@ -94,7 +89,9 @@ const Dashboard = () => {
                         </span>
                       ) : (
                         <button
-                          onClick={() => cancelAppointment(item._id)}
+                          onClick={() =>
+                            cancelAppointmentMutation.mutate(item._id)
+                          }
                           className="w-8 h-8 inline-flex items-center justify-center text-gray-500 bg-white border border-gray-300 hover:bg-red-600 hover:text-white rounded-full p-1 cursor-pointer transition-all duration-200 shadow-sm"
                           title="Cancel appointment"
                         >

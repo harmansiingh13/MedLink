@@ -1,15 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Calendar, MapPinned } from "@/components/icons";
-import axiosInstance from "../utils/AxiosInstance";
-import { API_PATHS } from "../utils/ApiPaths";
 import { Loader } from "../components/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { showToast } from "../store/toastSlice";
-import {
-  useCancelAppointment,
-  useUserAppointments,
-} from "../utils/hooks/useMyAppointments";
+import { useCancelAppointment, useUserAppointments } from "../api/myAppointmentsApi";
+import axiosInstance from "../services/AxiosInstance";
+import { API_PATHS } from "../constants/ApiPaths";
 
 const MyAppointments = () => {
   const navigate = useNavigate();

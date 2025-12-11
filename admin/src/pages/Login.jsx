@@ -1,63 +1,51 @@
-import { useContext, useState } from "react";
-import { AdminContext } from "../context/AdminContext";
-import { useToast } from "../context/ToastContext";
-import { DoctorContext } from "../context/DoctorContext";
+import { useState } from "react";
 import { Briefcase, ShieldUser } from "@/components/icons";
 import { useNavigate } from "react-router-dom";
-import { API_PATHS } from "../utils/ApiPaths";
-import axiosInstance from "../utils/AxiosInstance";
 import { Loader } from "../components/Loader";
+import { setAdminToken, setDoctorToken } from "../store/appSlice";
+import { useDispatch } from "react-redux";
+import { showToast } from "../store/toastSlice";
+import { useLogin } from "../api/loginApi";
 
 const Login = () => {
-  const [loader, setLoader] = useState(false);
   const [state, setState] = useState("Admin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const { showToast } = useToast();
-  const { setAToken } = useContext(AdminContext);
-  const { setDToken } = useContext(DoctorContext);
-
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const loginMutation = useLogin();
 
-  const onSubmitHandler = async (e) => {
+  const onSubmitHandler = (e) => {
     e.preventDefault();
-    console.log("clicked!");
-    try {
-      setLoader(true);
-      if (state === "Admin") {
-        const { data } = await axiosInstance.post(API_PATHS.ADMIN.LOGIN, {
-          email,
-          password,
-        });
-        if (data.success) {
-          navigate("/admin-dashboard");
-          localStorage.setItem("aToken", data.token);
-          setAToken(data.token);
-          showToast("Admin login successful", "success");
-        } else {
-          showToast(data.message, "error");
-        }
-      } else {
-        const { data } = await axiosInstance.post(API_PATHS.DOCTOR.LOGIN, {
-          email,
-          password,
-        });
-        if (data.success) {
-          navigate("/doctor-dashboard");
-          localStorage.setItem("dToken", data.token);
-          setDToken(data.token);
-          showToast("Doctor login successful", "success");
-        } else {
-          showToast(data.message, "error");
-        }
+
+    loginMutation.mutate(
+      {
+        role: state,
+        email,
+        password,
+      },
+      {
+        onSuccess: (data) => {
+          if (state === "Admin") {
+            dispatch(setAdminToken(data.token));
+            navigate("/admin-dashboard");
+            dispatch(
+              showToast({ message: "Admin login successful", type: "success" })
+            );
+          } else {
+            dispatch(setDoctorToken(data.token));
+            navigate("/doctor-dashboard");
+            dispatch(
+              showToast({ message: "Doctor login successful", type: "success" })
+            );
+          }
+        },
+
+        onError: (err) => {
+          dispatch(showToast({ message: err.message, type: "error" }));
+        },
       }
-    } catch (error) {
-      showToast(error.message, "error");
-      console.error("Form submit error:", error);
-    } finally {
-      setLoader(false);
-    }
+    );
   };
 
   const switchMode = (newMode) => {
@@ -66,7 +54,7 @@ const Login = () => {
     setPassword("");
   };
 
-  if (loader) return <Loader />;
+  if (loginMutation.isPending) return <Loader />;
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
@@ -78,9 +66,7 @@ const Login = () => {
           </h1>
         </div>
 
-        {/* Login Card */}
         <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-          {/* Mode Toggle */}
           <div className="flex border-b border-gray-200">
             <button
               onClick={() => switchMode("Admin")}
@@ -110,10 +96,8 @@ const Login = () => {
             </button>
           </div>
 
-          {/* Form */}
           <form onSubmit={onSubmitHandler} className="p-8">
             <div className="space-y-6">
-              {/* Email Field */}
               <div>
                 <label
                   htmlFor="email"
@@ -132,7 +116,6 @@ const Login = () => {
                 />
               </div>
 
-              {/* Password Field */}
               <div>
                 <label
                   htmlFor="password"
@@ -151,7 +134,6 @@ const Login = () => {
                 />
               </div>
 
-              {/* Submit Button */}
               <button
                 type="submit"
                 className="w-full bg-primary text-white py-3 px-4 rounded-lg font-medium cursor-pointer "

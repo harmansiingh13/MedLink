@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight } from "@/components/icons";
-import { useDoctors } from "../utils/hooks/useHome";
+import { useDoctors } from "../api/HomeApi";
 
 const RelatedDoctors = ({ docId, speciality }) => {
   const { data: doctors = [] } = useDoctors();

@@ -5,9 +5,9 @@ import { Info, Verified } from "@/components/icons";
 import { Loader } from "../components/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { showToast } from "../store/toastSlice";
-import { useBookAppointment } from "../utils/hooks/useAppointment";
-import { useDoctors } from "../utils/hooks/useHome";
 import { useQueryClient } from "@tanstack/react-query";
+import { useDoctors } from "../api/HomeApi";
+import { useBookAppointment } from "../api/AppointmentApi";
 
 const Appointment = () => {
   const { docId } = useParams();

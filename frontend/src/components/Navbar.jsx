@@ -6,7 +6,7 @@ import { Menu, X } from "@/components/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { showToast } from "../store/toastSlice";
 import { setToken } from "../store/appSlice";
-import { useUserProfile } from "../utils/hooks/useMyProfile";
+import { useUserProfile } from "../api/myProfileApi";
 
 const Navbar = () => {
   const navigate = useNavigate();

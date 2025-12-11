@@ -1,7 +1,4 @@
-import { useContext } from "react";
-import { AdminContext } from "../context/AdminContext";
 import { NavLink } from "react-router-dom";
-import { DoctorContext } from "../context/DoctorContext";
 import {
   Calendar,
   Dashboard,
@@ -9,10 +6,10 @@ import {
   User,
   Users,
 } from "@/components/icons";
+import { useSelector } from "react-redux";
 
 const Sidebar = () => {
-  const { aToken } = useContext(AdminContext);
-  const { dToken } = useContext(DoctorContext);
+  const { aToken, dToken } = useSelector((state) => state.app);
 
   return (
     <div className="min-h-screen bg-white border-r border-zinc-100">
@@ -26,7 +23,6 @@ const Sidebar = () => {
               }`
             }
           >
-            {/* <img src={assets.home_icon} alt="" /> */}
             <Dashboard className="w-7 h-7" />
             <p className="hidden md:block">Dashboard</p>
           </NavLink>
@@ -38,7 +34,6 @@ const Sidebar = () => {
               }`
             }
           >
-            {/* <img src={assets.appointment_icon} alt="" /> */}
             <Calendar className="w-7 h-7" />
             <p className="hidden md:block">Appointments</p>
           </NavLink>
@@ -50,7 +45,6 @@ const Sidebar = () => {
               }`
             }
           >
-            {/* <img src={assets.add_icon} alt="" /> */}
             <SquarePlus className="w-7 h-7" />
             <p className="hidden md:block">Add Doctor</p>
           </NavLink>
@@ -62,7 +56,6 @@ const Sidebar = () => {
               }`
             }
           >
-            {/* <img src={assets.people_icon} alt="" /> */}
             <Users className="w-7 h-7" />
             <p className="hidden md:block">Doctors List</p>
           </NavLink>
@@ -79,7 +72,6 @@ const Sidebar = () => {
               }`
             }
           >
-            {/* <img src={assets.home_icon} alt="" /> */}
             <Dashboard className="w-7 h-7" />
             <p className="hidden md:block">Dashboard</p>
           </NavLink>
@@ -91,7 +83,6 @@ const Sidebar = () => {
               }`
             }
           >
-            {/* <img src={assets.appointment_icon} alt="" /> */}
             <Calendar className="w-7 h-7" />
             <p className="hidden md:block">Appointments</p>
           </NavLink>
@@ -104,7 +95,6 @@ const Sidebar = () => {
               }`
             }
           >
-            {/* <img src={assets.people_icon} alt="" /> */}
             <User className="w-7 h-7" />
             <p className="hidden md:block">Profile</p>
           </NavLink>

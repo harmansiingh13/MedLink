@@ -4,8 +4,8 @@ import { Mail, Upload } from "@/components/icons";
 import { Loader } from "../components/Loader";
 import { useDispatch } from "react-redux";
 import { showToast } from "../store/toastSlice";
-import { useUpdateProfile, useUserProfile } from "../utils/hooks/useMyProfile";
 import { useQueryClient } from "@tanstack/react-query";
+import { useUpdateProfile, useUserProfile } from "../api/myProfileApi";
 
 const MyProfile = () => {
   const dispatch = useDispatch();
